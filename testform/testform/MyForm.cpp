@@ -3,10 +3,10 @@
 
 using namespace testform;
 int main() {
-	//Àu¤Æ¬É­±
+	//å„ªåŒ–gui
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	//°õ¦æGUI
+	//é–‹å•Ÿgui
 	Application::Run(gcnew MyForm());
 	return 0;
 }
