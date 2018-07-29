@@ -1,0 +1,283 @@
+#include<bits/stdc++.h>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+struct xy{
+    int x=0,y=0;
+};
+bool operator == (xy&a,xy&b){
+        return (a.x==b.x&&a.y==b.y);
+}
+int oldw[4][4] = {{0,0,0,0},{0,2,1,2},{0,1,1e9,1},{0,2,1,2}},w[4][4]={},d[4][2]={{2,2},{-2,-2},{-2,2},{2,-2}},d2[4][2][2]={{{0,2},{0,1}},{{2,0},{1,0}},{{-2,0},{-1,0}},{{0,-2},{0,-1}}};
+xy sec[4][4];
+char s[4][4] = {};
+int win = 0;
+void reset(void){
+    win = false;
+    for(int i=0;i<4;i++){
+        for(int q=0;q<4;q++){
+            s[i][q]=0;
+            w[i][q]=oldw[i][q];
+            sec[i][q].x=sec[i][q].y=0;
+        }
+    }
+}
+void print(void){
+    for(int i=1;i<4;i++){
+        for(int q=1;q<4;q++){
+            if(s[i][q]!=0)
+                cout << s[i][q]<<" ";
+            else
+                cout << "."<<" ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+//    for(int i=1;i<4;i++){
+//        for(int q=1;q<4;q++){
+//            cout << w[i][q]<<" ";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
+}
+bool judge(void){
+    for(int i=1;i<4;i++){
+        int ch=0,ch2=0;
+        for(int q=1;q<4;q++){
+            ch+=s[i][q];
+            ch2+=s[q][i];
+        }
+        if(ch=='X'*3||ch2=='X'*3){
+            win = 1;
+            return true;
+        }else if(ch=='O'*3||ch2=='O'*3){
+            win = 2;
+            return true;
+        }
+    }
+    if(s[1][1]+s[2][2]+s[3][3]=='X'*3||s[3][1]+s[2][2]+s[1][3]=='X'*3){
+        win = 1;
+        return true;
+    }
+    if(s[1][1]+s[2][2]+s[3][3]=='O'*3||s[3][1]+s[2][2]+s[1][3]=='O'*3){
+        win = 2;
+        return true;
+    }
+    for(int i=1;i<4;i++){
+        int br=0;
+        for(int q=1;q<4;q++){
+            if(s[i][q]==0){
+                br=1;
+                break;
+            }
+        }
+        if(br)break;
+        if(i==3){
+            return true;
+        }
+    }
+    return false;
+}
+void player(void){
+    char inx,iny;
+    int x,y;
+    cin >> inx>>iny;
+    while(true){
+        if(inx>'3'||inx<'1'||iny>'3'||iny<'1'){
+            cout << "wrong input!!!Please enter again!\n";
+            cin >> inx>>iny;
+        }else if(s[inx-'0'][iny-'0']!=0){
+            cout << "there have something!!!Please enter again!\n";
+            cin >> inx>>iny;
+        }else{
+            x=inx-'0';
+            y=iny-'0';
+            break;
+        }
+    }
+    s[x][y]='O';
+    if(w[x][y]==2){
+        for(int i=0;i<4;i++){
+            if(x+d[i][0]>=1&&x+d[i][0]<=3&&y+d[i][1]>=1&&y+d[i][1]<=3){
+                w[x+d[i][0]][y+d[i][1]]+=30;
+            }
+        }
+        for(int i=0;i<4;i++){
+            if(x+d2[i][0][0]>=1&&x+d2[i][0][0]<=3&&y+d2[i][0][1]>=1&&y+d2[i][0][1]<=3){
+                sec[x+d2[i][0][0]][y+d2[i][0][1]].x=x+d2[i][1][0];
+                sec[x+d2[i][0][0]][y+d2[i][0][1]].y=y+d2[i][1][1];
+            }
+        }
+    }
+    print();
+}
+void update(void){
+    for(int i=1;i<4;i++){
+        for(int q=1;q<4;q++){
+            if(sec[i][q].x!=0&&sec[i][q].y!=0){
+                int d3[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
+                for(int e=0;e<4;e++){
+                    if(s[i+d3[e][0]][q+d3[e][1]]=='O'){
+                        break;
+                    }
+                    if(e==3){
+                        w[i][q]+=10;
+                    }
+                }
+            }
+        }
+    }
+}
+void com(void){
+    for(int i=1;i<4;i++){
+        int ch=0,ch2=0;
+        for(int q=1;q<4;q++){
+            ch+=s[i][q];
+            ch2+=s[q][i];
+        }
+        if(ch=='X'*2){
+            for(int d=1;d<4;d++){
+                if(s[i][d]==0){
+                    s[i][d]='X';
+                    print();
+                    return;
+                }
+            }
+        }
+        if(ch2=='X'*2){
+            for(int d=1;d<4;d++){
+                if(s[d][i]==0){
+                    s[d][i]='X';
+                    print();
+                    return;
+                }
+            }
+        }
+    }
+    if(s[1][1]+s[2][2]+s[3][3]=='X'*2){
+        if(s[1][1]==0)s[1][1]='X';
+        if(s[2][2]==0)s[2][2]='X';
+        if(s[3][3]==0)s[3][3]='X';
+        print();
+        return;
+    }
+    if(s[3][1]+s[2][2]+s[1][3]=='X'*2){
+        if(s[3][1]==0)s[3][1]='X';
+        if(s[2][2]==0)s[2][2]='X';
+        if(s[1][3]==0)s[1][3]='X';
+        print();
+        return;
+    }
+    for(int i=1;i<4;i++){
+        int ch=0,ch2=0;
+        for(int q=1;q<4;q++){
+            ch+=s[i][q];
+            ch2+=s[q][i];
+        }
+        if(ch=='O'*2){
+            for(int d=1;d<4;d++){
+                if(s[i][d]==0){
+                    s[i][d]='X';
+                    print();
+                    return;
+                }
+            }
+        }
+        if(ch2=='O'*2){
+            for(int d=1;d<4;d++){
+                if(s[d][i]==0){
+                    s[d][i]='X';
+                    print();
+                    return;
+                }
+            }
+        }
+    }
+    if(s[1][1]+s[2][2]+s[3][3]=='O'*2){
+        if(s[1][1]==0)s[1][1]='X';
+        if(s[2][2]==0)s[2][2]='X';
+        if(s[3][3]==0)s[3][3]='X';
+        print();
+        return;
+    }
+    if(s[3][1]+s[2][2]+s[1][3]=='O'*2){
+        if(s[3][1]==0)s[3][1]='X';
+        if(s[2][2]==0)s[2][2]='X';
+        if(s[1][3]==0)s[1][3]='X';
+        print();
+        return;
+    }
+    vector<xy> ve;
+    int Max=0;
+    for(int i=1;i<4;i++){
+        for(int q=1;q<4;q++){
+            if(s[i][q]==0){
+                Max=max(Max,w[i][q]);
+            }
+        }
+    }
+    for(int i=1;i<4;i++){
+        for(int q=1;q<4;q++){
+            if(w[i][q]==Max){
+                xy will;
+                will.x=i;
+                will.y=q;
+                ve.push_back(will);
+            }
+        }
+    }
+    int a=rand()%ve.size();
+    s[ve[a].x][ve[a].y]='X';
+    print();
+    return;
+}
+int main(){
+    srand(time(NULL));
+    start:;
+    reset();
+    cout << "遊戲說明:\n";
+    cout << "本遊戲是自動圈圈叉叉,橫排為x直排為y\n";
+    cout << "(1,1)|(1,2)|(1,3)\n";
+    cout << "-----------------\n";
+    cout << "(2,1)|(2,2)|(2,3)\n";
+    cout << "-----------------\n";
+    cout << "(3,1)|(3,2)|(3,3)\n";
+    cout << "遊戲開始後請輸入座標";
+    cout << "遊戲開始:請選擇先攻或先守(0=先攻,1=先守)";
+    int ty;
+    cin >> ty;
+    if(!ty){
+        player();
+        com();
+        player();
+    }else{
+        com();
+        player();
+    }
+    while(!judge()){
+        update();
+        com();
+        if(judge())break;
+        player();
+    }
+    if(win==0){
+        cout << "Flat!!\n";
+    }else if(win==1){
+        cout << "You loss\n";
+    }else if(win==2){
+        cout << "You Win\n";
+    }
+    input:;
+    cout << "Do you want to play again?(y/n)";
+    char again;
+    cin >> again;
+    if(again=='y'){
+        goto start;
+    }else if(again=='n'){
+        return 0;
+    }else{
+        cout << "Please say again\n";
+        goto input;
+    }
+}
