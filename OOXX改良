@@ -229,7 +229,7 @@ void com(void){
     }
     for(int i=1;i<4;i++){
         for(int q=1;q<4;q++){
-            if(w[i][q]==Max){
+            if(w[i][q]==Max&&s[i][q]==0){
                 xy will;
                 will.x=i;
                 will.y=q;
@@ -254,7 +254,7 @@ int main(){
     cout << "-----------------\n";
     cout << "(3,1)|(3,2)|(3,3)\n";
     cout << "遊戲開始後請輸入座標,並且x跟y中間要空白";
-    cout << "遊戲開始:請選擇先攻或先守(0=先攻,1=先守)";
+    cout << "遊戲開始:\n請選擇先攻或先守(0=先攻,1=先守)";
     int ty;
     string inp;
     while(true){
