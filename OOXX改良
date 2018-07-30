@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
+#define MAX 100000000
 struct xy{
     int x=0,y=0;
 };
 bool operator == (xy&a,xy&b){
         return (a.x==b.x&&a.y==b.y);
 }
-int oldw[4][4] = {{0,0,0,0},{0,2,1,2},{0,1,1e9,1},{0,2,1,2}},w[4][4]={},d[4][2]={{2,2},{-2,-2},{-2,2},{2,-2}},d2[4][2][2]={{{0,2},{0,1}},{{2,0},{1,0}},{{-2,0},{-1,0}},{{0,-2},{0,-1}}};
+int oldw[4][4] = {{0,0,0,0},{0,2,1,2},{0,1,MAX,1},{0,2,1,2}},w[4][4]={},d[4][2]={{2,2},{-2,-2},{-2,2},{2,-2}},d2[4][2][2]={{{0,2},{0,1}},{{2,0},{1,0}},{{-2,0},{-1,0}},{{0,-2},{0,-1}}};
 xy sec[4][4];
 char s[4][4] = {};
 int win = 0;
@@ -80,19 +81,22 @@ bool judge(void){
     return false;
 }
 void player(void){
-    char inx,iny;
+    string inp;
     int x,y;
-    cin >> inx>>iny;
+    cout << "please enter you want to do\n";
+    getline(cin,inp);
     while(true){
-        if(inx>'3'||inx<'1'||iny>'3'||iny<'1'){
+        if(inp.size()!=3||inp[0]>'3'||inp[0]<'1'||inp[2]>'3'||inp[2]<'1'){
             cout << "wrong input!!!Please enter again!\n";
-            cin >> inx>>iny;
-        }else if(s[inx-'0'][iny-'0']!=0){
+            cout << "please enter you want to do\n";
+            getline(cin,inp);
+        }else if(s[inp[0]-'0'][inp[2]-'0']!=0){
             cout << "there have something!!!Please enter again!\n";
-            cin >> inx>>iny;
+            cout << "please enter you want to do\n";
+            getline(cin,inp);
         }else{
-            x=inx-'0';
-            y=iny-'0';
+            x=inp[0]-'0';
+            y=inp[2]-'0';
             break;
         }
     }
@@ -127,6 +131,12 @@ void update(void){
                 }
             }
         }
+    }
+    if((s[1][1]=='O'&&s[3][3]=='O')||(s[1][3]=='O'&&s[3][1]=='O')){
+        w[1][2]+=50;
+        w[2][1]+=50;
+        w[2][3]+=50;
+        w[3][2]+=50;
     }
 }
 void com(void){
@@ -243,10 +253,19 @@ int main(){
     cout << "(2,1)|(2,2)|(2,3)\n";
     cout << "-----------------\n";
     cout << "(3,1)|(3,2)|(3,3)\n";
-    cout << "遊戲開始後請輸入座標";
+    cout << "遊戲開始後請輸入座標,並且x跟y中間要空白";
     cout << "遊戲開始:請選擇先攻或先守(0=先攻,1=先守)";
     int ty;
-    cin >> ty;
+    string inp;
+    while(true){
+        getline(cin,inp);
+        if(inp.size()!=1||inp[0]<'0'||inp[0]>'1'){
+            cout << "wrong input!!Please enter again\n";
+        }else{
+            ty=inp[0]-'0';
+            break;
+        }
+    }
     if(!ty){
         player();
         com();
@@ -268,16 +287,20 @@ int main(){
     }else if(win==2){
         cout << "You Win\n";
     }
-    input:;
     cout << "Do you want to play again?(y/n)";
     char again;
-    cin >> again;
+    while(true){
+        getline(cin,inp);
+        if(inp.size()!=1||!(inp[0]=='y'||inp[0]=='n')){
+            cout << "wrong input!!Please enter again\n";
+        }else{
+            again=inp[0];
+            break;
+        }
+    }
     if(again=='y'){
         goto start;
     }else if(again=='n'){
         return 0;
-    }else{
-        cout << "Please say again\n";
-        goto input;
     }
 }
