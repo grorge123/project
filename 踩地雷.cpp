@@ -1,356 +1,200 @@
-#include<iostream>
-#include<stdlib.h>
-#include<time.h>
-#include<queue>
+#include<bits/stdc++.h>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
-struct smap{
-    int ty;
-    int num;
+#define LL long long int
+#define F first
+#define S second
+#define pi pair<int,int>
+struct xy{
+    int x = 0,y = 0;
 };
-struct df{
-    int x;
-    int y;
-};
-<<<<<<< HEAD
-int flagint=0;
-=======
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-smap ma[1000][1000]={};
-int end=0;
-void randf(int n,int m,int a){
-    int i;
-    unsigned seed;
-    seed = (unsigned)time(NULL); // 取得時間序列
-    srand(seed);
-    for(i=0; i<a;i++){
-        int x=rand()%n;
-        int y=rand()%m;
-//        cout << "x"<<x<<"y"<<y;
-        if(ma[x][y].num!=-1)
-            ma[x][y].num=-1;
-        else
-            i--;
+int n = 8,bone = 1,win = 0,flag = 0;
+char s[101][101] = {};
+int bs[101][101] = {};
+int d[8][2]={{0,1},{1,0},{1,-1},{1,1},{-1,-1},{-1,0},{0,-1},{-1,1}};
+void reset(){
+    win = flag = 0;
+    vector<xy> ve;
+    for(int i = 1;i<=n;i++){
+        for(int q = 1;q<=n;q++){
+            s[i][q]= '.';
+            bs[i][q] = 1;
+            xy now;
+            now.x = i,now.y = q;
+            ve.push_back(now);
+        }
+    }
+    while(bone--){
+        int a = rand()%ve.size();
+        bs[ve[a].x][ve[a].y] = 2;
+        ve.erase(ve.begin()+a);
     }
 }
-void tprint(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1)
-                cout << ma[i][q].num;
-            else
-                cout << "*";
+void printbs(void){
+    for(int i=1;i<=n;i++){
+        for(int q=1;q<=n;q++){
+            cout << bs[i][q];
         }
         cout << endl;
     }
 }
-void print(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].ty==0)
-                cout << "-";
-            else if(ma[i][q].ty==1)
-                cout << "^";
-            else if(ma[i][q].ty==3)
-                cout << "?";
-            else
-                cout << ma[i][q].num;
+void print(void){
+    for(int i=1;i<=n;i++){
+        for(int q=1;q<=n;q++){
+            cout << s[i][q];
         }
         cout << endl;
     }
 }
-void gprint(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1){
-                if(ma[i][q].ty==0)
-                    cout << "-";
-                else if(ma[i][q].ty==1)
-                    cout << "^";
-                else if(ma[i][q].ty==2)
-                    cout << ma[i][q].num;
-                else if(ma[i][q].ty==3)
-                    cout << "?";
-            }else{
-                cout << "*";
-            }
-        }
-        cout << endl;
-    }
-}
-void write(int n,int m){
-    int fin[8][2]={{1,0},{1,1},{0,1},{-1,1},{0,-1},{-1,-1},{-1,0},{1,-1}};
-<<<<<<< HEAD
-=======
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1){
-                ma[i][q].num=0;
-                for(int s=0;s<8;s++){
-                    if(ma[i+fin[s][0]][q+fin[s][1]].num==-1)
-                    ma[i][q].num++;
+bool judge(int x,int y,int ty){
+    if(ty == 1){
+        if(s[x][y] != '.'){
+            cout << "這裡不能打開\n";
+        }else if(bs[x][y] == 2){
+            for(int i=1;i<=n;i++){
+                for(int q=1;q<=n;q++){
+                    if(bs[i][q]==2){
+                        s[i][q]='*';
+                    }
                 }
             }
-        }
-    }
-}
-void whilt(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            ma[i][q].ty=0;
-        }
-    }
-}
-void bfs(int x,int y,int n,int m){
-    queue<df> q;
-    ma[x][y].ty=2;
-    int fin[8][2]={{1,0},{1,1},{0,1},{-1,1},{0,-1},{-1,-1},{-1,0},{1,-1}};
-    df now;
-    now.x=x;
-    now.y=y;
-    q.push(now);
-    while(q.empty()==0){
-//        cout << "進入dfs";
-        df will;
-        will=q.front();
-        q.pop();
-        for(int i=0;i<8;i++){
-            if(will.x+fin[i][0]>=0&&will.x+fin[i][0]!=n&&will.y+fin[i][1]>=0&&will.y+fin[i][1]!=m&&ma[will.x+fin[i][0]][will.y+fin[i][1]].num==0&&ma[will.x+fin[i][0]][will.y+fin[i][1]].ty==0){
-                ma[will.x+fin[i][0]][will.y+fin[i][1]].ty=2;
-                now.x=will.x+fin[i][0];
-                now.y=will.y+fin[i][1];
-//                cout << now.x<<" "<<now.y<<endl;
-                q.push(now);
-            }else if(will.x+fin[i][0]>=0&&will.x+fin[i][0]!=n&&will.y+fin[i][1]>=0&&will.y+fin[i][1]!=m){
-#include<iostream>
-#include<stdlib.h>
-#include<time.h>
-#include<queue>
-using namespace std;
-struct smap{
-    int ty;
-    int num;
-};
-struct df{
-    int x;
-    int y;
-};
-int flagint=0;
-smap ma[1000][1000]={};
-int end=0;
-void randf(int n,int m,int a){
-    int i;
-    unsigned seed;
-    seed = (unsigned)time(NULL); // 取得時間序列
-    srand(seed);
-    for(i=0; i<a;i++){
-        int x=rand()%n;
-        int y=rand()%m;
-//        cout << "x"<<x<<"y"<<y;
-        if(ma[x][y].num!=-1)
-            ma[x][y].num=-1;
-        else
-            i--;
-    }
-}
-void tprint(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1)
-                cout << ma[i][q].num;
-            else
-                cout << "*";
-        }
-        cout << endl;
-    }
-}
-void print(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].ty==0)
-                cout << "-";
-            else if(ma[i][q].ty==1)
-                cout << "^";
-            else if(ma[i][q].ty==3)
-                cout << "?";
-            else
-                cout << ma[i][q].num;
-        }
-        cout << endl;
-    }
-}
-void gprint(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1){
-                if(ma[i][q].ty==0)
-                    cout << "-";
-                else if(ma[i][q].ty==1)
-                    cout << "^";
-                else if(ma[i][q].ty==2)
-                    cout << ma[i][q].num;
-                else if(ma[i][q].ty==3)
-                    cout << "?";
-            }else{
-                cout << "*";
-            }
-        }
-        cout << endl;
-    }
-}
-void write(int n,int m){
-    int fin[8][2]={{1,0},{1,1},{0,1},{-1,1},{0,-1},{-1,-1},{-1,0},{1,-1}};
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num!=-1){
-                ma[i][q].num=0;
-                for(int s=0;s<8;s++){
-                    if(ma[i+fin[s][0]][q+fin[s][1]].num==-1)
-                    ma[i][q].num++;
-                }
-            }
-        }
-    }
-}
-void whilt(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            ma[i][q].ty=0;
-        }
-    }
-}
-void bfs(int x,int y,int n,int m){
-    queue<df> q;
-    ma[x][y].ty=2;
-    int fin[8][2]={{1,0},{1,1},{0,1},{-1,1},{0,-1},{-1,-1},{-1,0},{1,-1}};
-    df now;
-    now.x=x;
-    now.y=y;
-    q.push(now);
-    while(q.empty()==0){
-<<<<<<< HEAD
-//        cout << "�i�Jdfs";
-=======
-//        cout << "進入dfs";
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-        df will;
-        will=q.front();
-        q.pop();
-        for(int i=0;i<8;i++){
-            if(will.x+fin[i][0]>=0&&will.x+fin[i][0]!=n&&will.y+fin[i][1]>=0&&will.y+fin[i][1]!=m&&ma[will.x+fin[i][0]][will.y+fin[i][1]].num==0&&ma[will.x+fin[i][0]][will.y+fin[i][1]].ty==0){
-                ma[will.x+fin[i][0]][will.y+fin[i][1]].ty=2;
-                now.x=will.x+fin[i][0];
-                now.y=will.y+fin[i][1];
-//                cout << now.x<<" "<<now.y<<endl;
-                q.push(now);
-            }else if(will.x+fin[i][0]>=0&&will.x+fin[i][0]!=n&&will.y+fin[i][1]>=0&&will.y+fin[i][1]!=m){
-                ma[will.x+fin[i][0]][will.y+fin[i][1]].ty=2;
-            }
-        }
-    }
-}
-void flag (int x,int y,int a){
-    if(flagint<=a){
-        if(ma[x][y].ty==0){
-            ma[x][y].ty=1;
-            flagint++;
-            return;
-        }
-    }else{
-<<<<<<< HEAD
-        cout << "�X�l���ഡ�W�L�a�p"<<endl;
-=======
-        cout << "旗子不能插超過地雷"<<endl;
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-        return;
-    }
-    if(ma[x][y].ty==1){
-        ma[x][y].ty=3;
-        return;
-    }
-    if(ma[x][y].ty==3){
-        ma[x][y].ty=0;
-        flagint--;
-        return;
-    }
-}
-void doit(int x,int y,int z,int n,int m,int a){
-    if(z==3){
-        tprint(n,m);
-        return;
-    }else if(z==2){
-        flag(x,y,a);
-    }else if(z==1){
-        if(ma[x][y].num==-1){
-            cout << "gameover"<<endl;
-            end=1;
-            gprint(n,m);
-            return;
-        }else if(ma[x][y].num==0){
-            bfs(x,y,n,m);
+            return false;
         }else{
-            ma[x][y].ty=2;
+            xy now;
+            now.x=x,now.y=y;
+            queue<xy> qu;
+            qu.push(now);
+            while(!qu.empty()){
+                now=qu.front();
+                qu.pop();
+                int all=0;
+                for(int i=0;i<8;i++){
+                    if(bs[now.x+d[i][0]][now.y+d[i][1]]==2){
+                        all++;
+                    }
+                }
+                if(all!=0){
+                    s[now.x][now.y] = all+'0';
+                    continue;
+                }else{
+                    s[now.x][now.y] = '_';
+                }
+                for(int i=0;i<8;i++){
+                    if(bs[now.x+d[i][0]][now.y+d[i][1]] == 1&&s[now.x+d[i][0]][now.y+d[i][1]] == '.'){
+                        xy will;
+                        will.x = now.x+d[i][0],will.y = now.y+d[i][1];
+                        qu.push(will);
+                    }
+                }
+            }
         }
-    }else{
-    cout << "無此指令";
-    return;
+    }else if(ty == 2){
+        if (flag == bone){
+            cout << "炸彈沒有這麼多棵喔\n";
+        }else if(s[x][y] == '.'){
+            s[x][y] = '+';
+            flag++;
+        }else if(s[x][y]=='+'){
+            cout << "這裡已經被插過了\n";
+        }else{
+            cout << "這裡不能插旗\n";
+        }
+    }else if(ty == 3){
+        if(s[x][y]!='+'){
+            cout << "沒有旗子可以清理掉\n";
+        }else{
+            s[x][y] = '.';
+            flag--;
+        }
     }
+    print();
+    for(int i=1;i<=n;i++){
+        bool st=0;
+        for(int q=1;q<=n;q++){
+            if(bs[i][q] == 2&&s[i][q] != '+'){
+                st=1;
+                break;
+            }else if(bs[i][q] == 1&&s[i][q] == '.'){
+                st=1;
+                break;
+            }
+        }
+        if(st)break;
+        if(i==n){
+            win = 1;
+            return false;
+        }
+    }
+    return true;
 }
-void referee(int n,int m){
-    for(int i=0;i<n;i++){
-        for(int q=0;q<m;q++){
-            if(ma[i][q].num==-1&&ma[i][q].ty!=1)
-                return;
+int chNum(string inp){
+    int re=0;
+    for(int i=0;i<inp.size();i++){
+        re*=10;
+        re+=inp[i]-'0';
+    }
+    return re;
+}
+int input(int mi,int ma){
+    string inp;
+    getline(cin,inp);
+    for(int i=0;i<inp.size();i++){
+        if(inp[i]<'0'||inp[i]>'9'){
+            cout << "wrong input!Please enter again!\n";
+            return input(mi,ma);
         }
     }
-<<<<<<< HEAD
-    cout << "�AĹ�F"<<endl;
-=======
-    cout << "你贏了"<<endl;
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-    end=1;
-    return;
+    if(inp.size() == 0){
+        cout << "wrong input!Please enter again!\n";
+        return input(mi,ma);
+    }
+    int ans=chNum(inp);
+    if(ans>=mi&&ans<=ma){
+        return ans;
+    }else{
+        cout << "wrong range!!Please enter again!\n";
+        return input(mi,ma);
+    }
 }
 int main(){
-    int n,m,a=1e9;
-    cout << "請入長寬:";
-    cin >> n>>m;
-    while(a>n*m/2){
-        cout << "請輸入地雷數量:";
-        cin >>a ;
-        if(a>n*m/2)
-            cout << "地雷數需小於長乘寬除2";
+    srand(time(NULL));
+    while(true){
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        cout << "~                 歡迎遊玩彩地雷               ~\n";
+        cout << "~遊戲規則說明:你必須將所有的空格做打開或是插旗 ~\n";
+        cout << "~但是不能將旗插到非地雷的位置或是打開地雷的位置~\n";
+        cout << "~每個數字代表周圍8格內有幾個地雷               ~\n";
+        cout << "~符號說明:\"+\"代表旗子,\"_\"代表沒東西,\".\"代      ~\n";
+        cout << "~表未開發\"*\"代表地雷                           ~\n";
+        cout << "~輸入說明:直排為x橫排為y,一個數字輸入為一行    ~\n";
+        cout << "~                    說明結束                  ~\n";
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        cout << "請輸入地圖大小(最大100*100最小1*1)\n";
+        n = input(1,100);
+        cout << "請輸入地雷數量必須大於1和小於總空格數\n";
+        bone = input(1,n*n);
+        reset();
+//        printbs();
+        int x,y,ty;
+        do{
+            cout << "請輸入x座標";
+            x = input(1,n);
+            cout << "請輸入y座標";
+            y = input(1,n);
+            cout << "請輸入動作:\n1:翻開\n2:插旗\n3:清除旗子\n";
+            ty = input(1,3);
+        }while(judge(x,y,ty));
+        if(win == 1){
+            print();
+            cout << "恭喜你贏了\n";
+        }else{
+            print();
+            cout << "Bone!!你爆炸了\n";
+        }
+        cout << "Do you want to play again 1:yes 0:no\n";
+        if(!input(0,1)){
+            return 0;
+        }
     }
-    cout << "遊戲初始化"<<endl;
-    randf(n,m,a);
-    write(n,m);
-    while(end==0){
-        print(n,m);
-        int x,y,z;
-<<<<<<< HEAD
-        cout << "�п�Jxy�y�ЩM����ʧ@1�O���X2�O��U�h";
-=======
-        cout << "請輸入xy座標和執行動作1是插旗2是踩下去";
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-        cin >>x>>y>>z;
-        x--;y--;
-        if(ma[x][y].ty!=2)
-            if(x<0||y<0||x>n||y>m)
-<<<<<<< HEAD
-                cout << "�W�X�d��"<<endl;
-            else
-                doit(x,y,z,n,m,a);
-        else
-            cout << "����w�}�o";
-=======
-                cout << "超出範圍"<<endl;
-            else
-                doit(x,y,z,n,m,a);
-        else
-            cout << "此格已開發";
->>>>>>> 4b987b7eb3a5acf724a951a6bd3e27eda5b00b1c
-        if(flagint==a)
-            referee(n,m);
-    }
-//    tprint(n,m);
 }
