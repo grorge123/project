@@ -91,7 +91,7 @@ bool judge(int x,int y,int ty){
         }
     }else if(ty == 2){
         if (flag == bone){
-            cout << "炸彈沒有這麼多棵喔\n";
+            cout << "炸彈沒有這麼多顆喔\n";
         }else if(s[x][y] == '.'){
             s[x][y] = '+';
             flag++;
