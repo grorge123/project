@@ -115,7 +115,7 @@ bool judge(int x,int y,int ty){
             if(bs[i][q] == 2&&s[i][q] != '+'){
                 st=1;
                 break;
-            }else if(bs[i][q] == 1&&s[i][q] == '.'){
+            }else if(bs[i][q] == 1&&s[i][q] != '.'){
                 st=1;
                 break;
             }
@@ -177,6 +177,7 @@ int main(){
         reset();
 //        printbs();
         int x,y,ty;
+        printbs();
         do{
             cout << "請輸入x座標";
             x = input(1,n);
