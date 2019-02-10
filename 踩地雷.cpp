@@ -50,7 +50,7 @@ void print(void){
 bool judge(int x,int y,int ty){
     if(ty == 1){
         if(s[x][y] != '.'){
-            cout << "é€™è£¡ä¸èƒ½æ‰“é–‹\n";
+            cout << "³o¸Ì¤£¯à¥´¶}\n";
         }else if(bs[x][y] == 2){
             for(int i=1;i<=n;i++){
                 for(int q=1;q<=n;q++){
@@ -91,18 +91,18 @@ bool judge(int x,int y,int ty){
         }
     }else if(ty == 2){
         if (flag == bone){
-            cout << "ç‚¸å½ˆæ²’æœ‰é€™éº¼å¤šé¡†å–”\n";
+            cout << "¬µ¼u¨S¦³³o»ò¦hÁû³á\n";
         }else if(s[x][y] == '.'){
             s[x][y] = '+';
             flag++;
         }else if(s[x][y]=='+'){
-            cout << "é€™è£¡å·²ç¶“è¢«æ’éŽäº†\n";
+            cout << "³o¸Ì¤w¸g³Q´¡¹L¤F\n";
         }else{
-            cout << "é€™è£¡ä¸èƒ½æ’æ——\n";
+            cout << "³o¸Ì¤£¯à´¡ºX\n";
         }
     }else if(ty == 3){
         if(s[x][y]!='+'){
-            cout << "æ²’æœ‰æ——å­å¯ä»¥æ¸…ç†æŽ‰\n";
+            cout << "¨S¦³ºX¤l¥i¥H²M²z±¼\n";
         }else{
             s[x][y] = '.';
             flag--;
@@ -161,37 +161,238 @@ int main(){
     srand(time(NULL));
     while(true){
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        cout << "~                 æ­¡è¿ŽéŠçŽ©å½©åœ°é›·               ~\n";
-        cout << "~éŠæˆ²è¦å‰‡èªªæ˜Ž:ä½ å¿…é ˆå°‡æ‰€æœ‰çš„ç©ºæ ¼åšæ‰“é–‹æˆ–æ˜¯æ’æ—— ~\n";
-        cout << "~ä½†æ˜¯ä¸èƒ½å°‡æ——æ’åˆ°éžåœ°é›·çš„ä½ç½®æˆ–æ˜¯æ‰“é–‹åœ°é›·çš„ä½ç½®~\n";
-        cout << "~æ¯å€‹æ•¸å­—ä»£è¡¨å‘¨åœ8æ ¼å…§æœ‰å¹¾å€‹åœ°é›·               ~\n";
-        cout << "~ç¬¦è™Ÿèªªæ˜Ž:\"+\"ä»£è¡¨æ——å­,\"_\"ä»£è¡¨æ²’æ±è¥¿,\".\"ä»£      ~\n";
-        cout << "~è¡¨æœªé–‹ç™¼\"*\"ä»£è¡¨åœ°é›·                           ~\n";
-        cout << "~è¼¸å…¥èªªæ˜Ž:ç›´æŽ’ç‚ºxæ©«æŽ’ç‚ºy,ä¸€å€‹æ•¸å­—è¼¸å…¥ç‚ºä¸€è¡Œ    ~\n";
-        cout << "~                    èªªæ˜ŽçµæŸ                  ~\n";
+        cout << "~                 Åwªï¹Cª±±m¦a¹p               ~\n";
+        cout << "~¹CÀ¸³W«h»¡©ú:§A¥²¶·±N©Ò¦³ªºªÅ®æ°µ¥´¶}©Î¬O´¡ºX ~\n";
+        cout << "~¦ý¬O¤£¯à±NºX´¡¨ì«D¦a¹pªº¦ì¸m©Î¬O¥´¶}¦a¹pªº¦ì¸m~\n";
+        cout << "~¨C­Ó¼Æ¦r¥Nªí©P³ò8®æ¤º¦³´X­Ó¦a¹p               ~\n";
+        cout << "~²Å¸¹»¡©ú:\"+\"¥NªíºX¤l,\"_\"¥Nªí¨SªF¦è,\".\"¥N      ~\n";
+        cout << "~ªí¥¼¶}µo\"*\"¥Nªí¦a¹p                           ~\n";
+        cout << "~¿é¤J»¡©ú:ª½±Æ#include<bits/stdc++.h>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+#define LL long long int
+#define F first
+#define S second
+#define pi pair<int,int>
+struct xy{
+    int x = 0,y = 0;
+};
+int n = 8,bone = 1,win = 0,flag = 0;
+char s[101][101] = {};
+int bs[101][101] = {};
+int d[8][2]={{0,1},{1,0},{1,-1},{1,1},{-1,-1},{-1,0},{0,-1},{-1,1}};
+void reset(){
+    win = flag = 0;
+    vector<xy> ve;
+    for(int i = 1;i<=n;i++){
+        for(int q = 1;q<=n;q++){
+            s[i][q]= '.';
+            bs[i][q] = 1;
+            xy now;
+            now.x = i,now.y = q;
+            ve.push_back(now);
+        }
+    }
+    while(bone--){
+        int a = rand()%ve.size();
+        bs[ve[a].x][ve[a].y] = 2;
+        ve.erase(ve.begin()+a);
+    }
+}
+void printbs(void){
+    for(int i=1;i<=n;i++){
+        for(int q=1;q<=n;q++){
+            cout << bs[i][q];
+        }
+        cout << endl;
+    }
+}
+void print(void){
+    for(int i=1;i<=n;i++){
+        for(int q=1;q<=n;q++){
+            cout << s[i][q];
+        }
+        cout << endl;
+    }
+}
+bool judge(int x,int y,int ty){
+    if(ty == 1){
+        if(s[x][y] != '.'){
+            cout << "³o¸Ì¤£¯à¥´¶}\n";
+        }else if(bs[x][y] == 2){
+            for(int i=1;i<=n;i++){
+                for(int q=1;q<=n;q++){
+                    if(bs[i][q]==2){
+                        s[i][q]='*';
+                    }
+                }
+            }
+            return false;
+        }else{
+            xy now;
+            now.x=x,now.y=y;
+            queue<xy> qu;
+            qu.push(now);
+            while(!qu.empty()){
+                now=qu.front();
+                qu.pop();
+                int all=0;
+                for(int i=0;i<8;i++){
+                    if(bs[now.x+d[i][0]][now.y+d[i][1]]==2){
+                        all++;
+                    }
+                }
+                if(all!=0){
+                    s[now.x][now.y] = all+'0';
+                    continue;
+                }else{
+                    s[now.x][now.y] = '_';
+                }
+                for(int i=0;i<8;i++){
+                    if(bs[now.x+d[i][0]][now.y+d[i][1]] == 1&&s[now.x+d[i][0]][now.y+d[i][1]] == '.'){
+                        xy will;
+                        will.x = now.x+d[i][0],will.y = now.y+d[i][1];
+                        qu.push(will);
+                    }
+                }
+            }
+        }
+    }else if(ty == 2){
+        if (flag == bone){
+            cout << "¬µ¼u¨S¦³³o»ò¦hÁû³á\n";
+        }else if(s[x][y] == '.'){
+            s[x][y] = '+';
+            flag++;
+        }else if(s[x][y]=='+'){
+            cout << "³o¸Ì¤w¸g³Q´¡¹L¤F\n";
+        }else{
+            cout << "³o¸Ì¤£¯à´¡ºX\n";
+        }
+    }else if(ty == 3){
+        if(s[x][y]!='+'){
+            cout << "¨S¦³ºX¤l¥i¥H²M²z±¼\n";
+        }else{
+            s[x][y] = '.';
+            flag--;
+        }
+    }
+    print();
+    for(int i=1;i<=n;i++){
+        bool st=0;
+        for(int q=1;q<=n;q++){
+            if(bs[i][q] == 2&&s[i][q] != '+'){
+                st=1;
+                break;
+            }else if(bs[i][q] == 1&&s[i][q] != '.'){
+                st=1;
+                break;
+            }
+        }
+        if(st)break;
+        if(i==n){
+            win = 1;
+            return false;
+        }
+    }
+    return true;
+}
+int chNum(string inp){
+    int re=0;
+    for(int i=0;i<inp.size();i++){
+        re*=10;
+        re+=inp[i]-'0';
+    }
+    return re;
+}
+int input(int mi,int ma){
+    string inp;
+    getline(cin,inp);
+    for(int i=0;i<inp.size();i++){
+        if(inp[i]<'0'||inp[i]>'9'){
+            cout << "wrong input!Please enter again!\n";
+            return input(mi,ma);
+        }
+    }
+    if(inp.size() == 0){
+        cout << "wrong input!Please enter again!\n";
+        return input(mi,ma);
+    }
+    int ans=chNum(inp);
+    if(ans>=mi&&ans<=ma){
+        return ans;
+    }else{
+        cout << "wrong range!!Please enter again!\n";
+        return input(mi,ma);
+    }
+}
+int main(){
+    srand(time(NULL));
+    while(true){
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        cout << "è«‹è¼¸å…¥åœ°åœ–å¤§å°(æœ€å¤§100*100æœ€å°1*1)\n";
+        cout << "~                 Åwªï¹Cª±±m¦a¹p               ~\n";
+        cout << "~¹CÀ¸³W«h»¡©ú:§A¥²¶·±N©Ò¦³ªºªÅ®æ°µ¥´¶}©Î¬O´¡ºX ~\n";
+        cout << "~¦ý¬O¤£¯à±NºX´¡¨ì«D¦a¹pªº¦ì¸m©Î¬O¥´¶}¦a¹pªº¦ì¸m~\n";
+        cout << "~¨C­Ó¼Æ¦r¥Nªí©P³ò8®æ¤º¦³´X­Ó¦a¹p               ~\n";
+        cout << "~²Å¸¹»¡©ú:\"+\"¥NªíºX¤l,\"_\"¥Nªí¨SªF¦è,\".\"¥N      ~\n";
+        cout << "~ªí¥¼¶}µo\"*\"¥Nªí¦a¹p                           ~\n";
+        cout << "~¿é¤J»¡©ú:ª½±Æ¬°x¾î±Æ¬°y,¤@­Ó¼Æ¦r¿é¤J¬°¤@¦æ    ~\n";
+        cout << "~                    »¡©úµ²§ô                  ~\n";
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        cout << "½Ð¿é¤J¦a¹Ï¤j¤p(³Ì¤j100*100³Ì¤p1*1)\n";
         n = input(1,100);
-        cout << "è«‹è¼¸å…¥åœ°é›·æ•¸é‡å¿…é ˆå¤§æ–¼1å’Œå°æ–¼ç¸½ç©ºæ ¼æ•¸\n";
+        cout << "½Ð¿é¤J¦a¹p¼Æ¶q¥²¶·¤j©ó1©M¤p©óÁ`ªÅ®æ¼Æ\n";
         bone = input(1,n*n);
         reset();
 //        printbs();
         int x,y,ty;
         printbs();
         do{
-            cout << "è«‹è¼¸å…¥xåº§æ¨™";
+            cout << "½Ð¿é¤Jx®y¼Ð";
             x = input(1,n);
-            cout << "è«‹è¼¸å…¥yåº§æ¨™";
+            cout << "½Ð¿é¤Jy®y¼Ð";
             y = input(1,n);
-            cout << "è«‹è¼¸å…¥å‹•ä½œ:\n1:ç¿»é–‹\n2:æ’æ——\n3:æ¸…é™¤æ——å­\n";
+            cout << "½Ð¿é¤J°Ê§@:\n1:Â½¶}\n2:´¡ºX\n3:²M°£ºX¤l\n";
             ty = input(1,3);
         }while(judge(x,y,ty));
         if(win == 1){
             print();
-            cout << "æ­å–œä½ è´äº†\n";
+            cout << "®¥³ß§AÄ¹¤F\n";
         }else{
             print();
-            cout << "Bone!!ä½ çˆ†ç‚¸äº†\n";
+            cout << "Bone!!§AÃz¬µ¤F\n";
+        }
+        cout << "Do you want to play again 1:yes 0:no\n";
+        if(!input(0,1)){
+            return 0;
+        }
+    }
+}
+¬°x¾î±Æ¬°y,¤@­Ó¼Æ¦r¿é¤J¬°¤@¦æ    ~\n";
+        cout << "~                    »¡©úµ²§ô                  ~\n";
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        cout << "½Ð¿é¤J¦a¹Ï¤j¤p(³Ì¤j100*100³Ì¤p1*1)\n";
+        n = input(1,100);
+        cout << "½Ð¿é¤J¦a¹p¼Æ¶q¥²¶·¤j©ó1©M¤p©óÁ`ªÅ®æ¼Æ\n";
+        bone = input(1,n*n);
+        reset();
+//        printbs();
+        int x,y,ty;
+        print();
+        do{
+            cout << "½Ð¿é¤Jx®y¼Ð";
+            x = input(1,n);
+            cout << "½Ð¿é¤Jy®y¼Ð";
+            y = input(1,n);
+            cout << "½Ð¿é¤J°Ê§@:\n1:Â½¶}\n2:´¡ºX\n3:²M°£ºX¤l\n";
+            ty = input(1,3);
+        }while(judge(x,y,ty));
+        if(win == 1){
+            print();
+            cout << "®¥³ß§AÄ¹¤F\n";
+        }else{
+            print();
+            cout << "Bone!!§AÃz¬µ¤F\n";
         }
         cout << "Do you want to play again 1:yes 0:no\n";
         if(!input(0,1)){

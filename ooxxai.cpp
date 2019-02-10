@@ -1,4 +1,6 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<time.h>
+#include<random>
 using namespace std;
 char g[4][4] ;
 int l[8][3]={{0,1,2},{3,4,5},{6,7,8},{0,3,6},
