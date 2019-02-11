@@ -3,17 +3,18 @@
 using namespace std;
 #define M_PI 3.14159265358979323846 // pi
 #define ISC 1.382 //Solar Constant(=1.382 [kW /m)
+#define sun 149600000000 // 太陽到地球的距離
 //ψ = fi
 //δ = del
 //ω = om
-//φ = phi
+//φ = phi 緯度
 //e = E
 //χ = X
 //n = N
-//λ = lam
+//λ = lam 經度
 //ρ = ro
-//β = B
-//γ = R
+//β = B 太陽能板的方位角
+//γ = R 太陽能板的方位角
 //θ = si
 struct cycle{
     //球座標 ( r , θ , φ )
@@ -71,12 +72,32 @@ long double f_IrBR(long double I,long double ro,long double B){
     return (ro * I) * ((1 - cos(B)) / (2));
 }
 long double f_ro(long double NS){
-    return 0.2 * (1 - NS) + 0.7 * NS;
+    return 0.55;//new concrete Typical albedo (https://en.wikipedia.org/wiki/Albedo)
+//    return 0.2 * (1 - NS) + 0.7 * NS;
 }
-bool init(){
+long double get_IBR(long double N,long double R,long double B,long double phi,long double lam){
+    long double X = f_X(N);
+    long double E = f_E(X);
+    long double del = f_del(X),om = f_om(lam,E);
+    long double sin_H = f_sin_H(cos(phi),cos(del),cos(om),del,phi),sin_H0 = f_sin_H0(del,phi);
+    long double I = f_I(sin_H,sin_H0);
+    long double IDN = f_IDN(I,sin_H),cos_si = f_cos_si(del,om,B,R,phi),IoH = f_IoH(sin_H,N);
+    long double ISH = f_ISH(I,IDN,sin_H),ro = f_ro(0);
+    long double IbBR = f_IbBR(IDN,cos_si),IsBR = f_IsBR(I,ISH,IoH,cos_si,sin_H,B),IrBR = f_IrBR(I,ro,B);
+    return f_IBR(IsBR,IbBR,IrBR);
+}
+bool init(long double* N,long double* R,long double* B,long double* phi,long double* lam){
     string address;
     cout << "input the file name:";
     cin >> address;
+    cout << "input Azimuth Angle of PV Module:";
+    cin >> *R;
+    cout << "input Tilt Angle of PV Module:";
+    cin >> *B;
+    cout << "input Latitude:";
+    cin >> *phi;
+    cout << "input Longitude:";
+    cin >> *lam;
     fstream file;
 //    file.open(address,'r');
     if(file){
@@ -89,10 +110,12 @@ bool init(){
             file >> s[i][q];
         }
     }
+    return 1;
 }
 
 int main(){
-    if(!init())return 0;
+    long double N = 365,R,B,phi,lam;
+    if(!init(&N,&R,&B,&phi,&lam))return 0;
 //    solve();
 //    output();
 }
