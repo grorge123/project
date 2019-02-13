@@ -1,0 +1,17 @@
+幫我debug
+這個程式就是沒辦法ac請幫她ac並且修改字數不能超過15個
+題目是輸入a和b然後輸出a+b
+#include <iostream>
+using namespace std;
+int main(){
+    long long int a,b;
+    cin >> a>> b;
+    cout << a+b;
+    return 0;
+}
+0<a<=2147483647
+0<b<=2147483647
+範例輸入:
+1 2
+範例輸出:
+2 3
