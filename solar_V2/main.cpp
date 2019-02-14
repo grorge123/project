@@ -91,8 +91,6 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     long double cos_H = cos(asin(sin_H));
     long double sin_fi = f_sin_fi(del,sin(om),cos_H);
 //    cout << N << ' ' << om/15+12 << ' ' << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
-//    cout << sin_fi << endl;
-    cout << sin_fi << ',';
     return f_IBR(IsBR,IbBR,IrBR);
 }
 inline bool init(long double* N,long double* R,long double* B,long double* phi,long double* lam){
@@ -120,9 +118,9 @@ inline bool init(long double* N,long double* R,long double* B,long double* phi,l
     return 1;
 }
 void special_point(){
-    for(int i = -75; i < 75;i += 15){
+    for(int i = 0; i <= 90;i ++){
 //        113,174,267,357
-        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
+        cout << i << ' ' << get_IBR(350,((0) * M_PI)/180,((i) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,15) << endl;
     }
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
