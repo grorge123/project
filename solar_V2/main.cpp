@@ -23,6 +23,7 @@ struct cycle{
     //r = ¥b®| £c = ¸òz¶b§¨¨¤ £p = ¸òx¶b§¨¨¤
 
 };
+long double all = 0;
 int n;
 int s[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
@@ -92,7 +93,7 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     long double sin_fi = f_sin_fi(del,sin(om),cos_H);
 //    cout << N << ' ' << om/15+12 << ' ' << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
 //    cout << sin_fi << endl;
-    cout << sin_fi << ',';
+    all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
 inline bool init(long double* N,long double* R,long double* B,long double* phi,long double* lam){
@@ -120,15 +121,20 @@ inline bool init(long double* N,long double* R,long double* B,long double* phi,l
     return 1;
 }
 void special_point(){
-    for(int i = -75; i < 75;i += 15){
-//        113,174,267,357
-        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
-    }
-//    for(long double i = 0; i < 360; i++){
-//        for(long double q = 0; q < 360; q++){
-//            cout << "¤è¦ì:" << i << ' ' << "¶É±×:" << q << ' '<< "¯à¶q:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
-//        }
+//    for(int i = -75; i < 75;i += 15){
+////        113,174,267,357
+//        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
 //    }
+    for(int i = 50;i <= 90 ;i += 10){
+        all = 0;
+        for(int q = -75; q <= 75; q+=15){
+            get_IBR(113, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(174, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(267, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(357, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+        }
+        cout << all << ',';
+    }
 }
 int main(){
     IOS
