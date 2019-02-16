@@ -174,12 +174,14 @@ void special_point(){
     for(int i = 18;i <= 28 ;i ++){
         all = 0;
         for(int q = -75; q <= 75; q+=15){
-            get_IBR(113, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            get_IBR(174, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            get_IBR(267, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            get_IBR(357, ((0) * M_PI)/180, ((i) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(113, ((0) * M_PI)/180, ((i) * M_PI)/180, ((22) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(174, ((0) * M_PI)/180, ((i) * M_PI)/180, ((22) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(267, ((0) * M_PI)/180, ((i) * M_PI)/180, ((22) * M_PI)/180, ((121) * M_PI)/180,q);
+            get_IBR(357, ((0) * M_PI)/180, ((i) * M_PI)/180, ((22) * M_PI)/180, ((121) * M_PI)/180,q);
         }
-        cout << all << '\t';
+        cout << all << ',';
+        if(i == 40) i-=5;
+        else if(i == 45) i-=5;
     }
 }
 void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
