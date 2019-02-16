@@ -1,31 +1,35 @@
 #include <bits/stdc++.h>
 #include <math.h>
 using namespace std;
-#define IOS ios::sync_with_stdio(0);cin.tie(0);
+#define IOS ios::sync_with_stdio();cin.tie(0);
 #define endl '\n'
 #define M_PI 3.14159265358979323846 // pi
 #define ISC 1.382 //Solar Constant(=1.382 [kW /m)
-#define sun 149600000000 // ¤Ó¶§¨ì¦a²yªº¶ZÂ÷
-//£r = fi
-//£_ = del
-//£s = om
-//£p = phi ½n«×
+#define sun 149600000000 // å¤ªé™½åˆ°åœ°çƒçš„è·é›¢
+#define F first
+#define S second
+#define pii pair<int,int>
+//Ïˆ = fi
+//Î´ = del
+//Ï‰ = om
+//Ï† = phi ç·¯åº¦
 //e = E
-//£q = X
+//Ï‡ = X
 //n = N
-//£f = lam ¸g«×
-//£l = ro
-//£] = B ¤Ó¶§¯àªOªº¶É±×¨¤
-//£^ = R ¤Ó¶§¯àªOªº¤è¦ì¨¤
-//£c = si
+//Î» = lam ç¶“åº¦
+//Ï = ro
+//Î² = B å¤ªé™½èƒ½æ¿çš„å‚¾æ–œè§’
+//Î³ = R å¤ªé™½èƒ½æ¿çš„æ–¹ä½è§’
+//Î¸ = si
 struct cycle{
-    //²y®y¼Ğ ( r , £c , £p )
-    //r = ¥b®| £c = ¸òz¶b§¨¨¤ £p = ¸òx¶b§¨¨¤
+    //çƒåº§æ¨™ ( r , Î¸ , Ï† )
+    //r = åŠå¾‘ Î¸ = è·Ÿzè»¸å¤¾è§’ Ï† = è·Ÿxè»¸å¤¾è§’
 
 };
 long double all = 0;
 int n;
 int s[10005][10005]={};
+bool is_solar[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
     return (cos(del) * sin_om)/cos_H;
 }
@@ -79,6 +83,25 @@ inline long double f_ro(long double NS){
     return 0.55;//new concrete Typical albedo (https://en.wikipedia.org/wiki/Albedo)
 //    return 0.2 * (1 - NS) + 0.7 * NS;
 }
+inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_sin_fi){
+    om = ((om) * M_PI)/180;
+    long double X = f_X(N);
+//    long double E = f_E(X);
+    long double del = f_del(X,N)/*,om = f_om(lam,E)*/;
+    long double sin_H = f_sin_H(cos(phi),cos(del),cos(om),del,phi),sin_H0 = f_sin_H0(del,phi);
+    long double I = f_I(sin_H,sin_H0);
+    long double IDN = f_IDN(I,sin_H),cos_si = f_cos_si(del,om,B,R,phi),IoH = f_IoH(sin_H,N);
+    long double ISH = f_ISH(I,IDN,sin_H),ro = f_ro(0);
+    long double IbBR = f_IbBR(IDN,cos_si),IsBR = f_IsBR(I,ISH,IoH,cos_si,sin_H,B),IrBR = f_IrBR(I,ro,B);
+    long double cos_H = cos(asin(sin_H));
+    long double sin_fi = f_sin_fi(del,sin(om),cos_H);
+//    cout << N << ' ' << om/15+12 << ' ' << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
+//    cout << sin_fi << endl;
+    *s_sin_H = sin_H;
+    *s_sin_fi = sin_fi;
+    all += IbBR;
+    return f_IBR(IsBR,IbBR,IrBR);
+}
 inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om){
     om = ((om) * M_PI)/180;
     long double X = f_X(N);
@@ -96,7 +119,8 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
-inline bool init(long double* N,long double* R,long double* B,long double* phi,long double* lam){
+inline bool init(long double* phi,long double* lam){
+    int m = 0;
     string address;
     cout << "input the file name:";
     cin >> address;
@@ -106,6 +130,20 @@ inline bool init(long double* N,long double* R,long double* B,long double* phi,l
     cout << "input Longitude:";
     cin >> *lam;
     *lam = ((*lam) * M_PI)/180;
+    cout << "How many solar do you want to build?";
+    cin >> m;
+    for(int i = 0; i < m; i++){
+        pair<int,int> a,b;
+        cout << "input upper left corner:";
+        cin >> a.F >> b.S;
+        cout << "input lower right corner:";
+        cin >> b.F >> b.S;
+        for(int i = a.F; i <= b.F; i++){
+            for(int q= a.S; q <= b.S; q++){
+                is_solar[i][q] = 1;
+            }
+        }
+    }
     fstream file;
 //    file.open(address,'r');
     if(file){
@@ -126,11 +164,11 @@ void special_point(){
 //        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
 //    for(int i = 0; i <= 90;i ++){
 ////        113,174,267,357
-        cout << 60 << ' ' << get_IBR(357,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,75) << endl;
+//        cout << 60 << ' ' << get_IBR(357,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,75) << endl;
 //    }
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
-//            cout << "¤è¦ì:" << i << ' ' << "¶É±×:" << q << ' '<< "¯à¶q:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
+//            cout << "æ–¹ä½:" << i << ' ' << "å‚¾æ–œ:" << q << ' '<< "èƒ½é‡:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
 //        }
 //    }
     for(int i = 18;i <= 28 ;i ++){
@@ -144,11 +182,116 @@ void special_point(){
         cout << all << '\t';
     }
 }
+void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
+    pii center = {n/2,n/2};
+    long double X = ((sun * cos(asin(sin_H))) * sin_fi) + center.F,Y = ((sun * cos(asin(sin_H))) * cos(asin(sin_H)) * -1) + center.S;
+    if(X - center.F == 0){
+        if(Y > center.S){
+            for(int i = center.S; i <= Y; i++){
+                if(i < n){
+                    qu.push(pii(X,i));
+                }else{
+                    break;
+                }
+            }
+        }else{
+            for(int i = center.S; i >= Y; i--){
+                if(i >= 0){
+                    qu.push(pii(X,i));
+                }else{
+                    break;
+                }
+            }
+        }
+    }else if(Y - center.S == 0){
+        if(X > center.F){
+            for(int i = center.F; i <= X; i++){
+                if(i < n){
+                    qu.push(pii(i,Y));
+                }else{
+                    break;
+                }
+            }
+        }else{
+            for(int i = center.F; i >= X; i--){
+                if(i >= 0){
+                    qu.push(pii(i,Y));
+                }else{
+                    break;
+                }
+            }
+        }
+    }else{
+        //yâˆ’center.S=m(xâˆ’center.F)
+        //y-center.S=m*x-m*center.F
+        //y-m*x-center.S-m*center.F=0
+        long double m = (Y - center.S) / (X - center.F);
+        int px,py,nx = now.F,ny = now.S;
+        if(X > center.F)px = 1;
+        else px = -1;
+        if(Y > center.S)py = 1;
+        else py = -1;
+        nx += px;
+        while(nx >= 0 && nx < n && ny >= 0 && ny < n){
+            while(ny >= 0 && ny < n){
+                if(abs(ny - (m * nx) - center.S - (m * center.F))>0.5){
+                    ny += py;
+                }
+            }
+            for(int i = ny; ny >= 0 && ny < n; i += py){
+                if(abs(ny - (m * nx) - center.S - (m * center.F))<=0.5){
+                    qu.push(pii(nx,ny));
+                }
+            }
+            nx += px;
+        }
+    }
+    return;
+}
+int is_out(long double sin_H,long double sin_fi){
+    int re = 0;
+    for(int i = 0; i < n; i++){
+        for(int q = 0; q < n; q++){
+            if(is_solar[i][q]){
+                queue<pii> qu;
+                get_hourse(qu,pii(i,q),sin_H,sin_fi);
+                long double lb = asin (sin_H) * 180.0 / M_PI;
+                while(!qu.empty()){
+                    pii now = qu.front();
+                    long double lx = sqrt( (now.F - i) * (now.F - i) + (now.S - q) * (now.S - q) );
+                    if( lb < atan(s[now.F][now.S] / lx)){
+                        qu.pop();
+                    }else{
+                        break;
+                    }
+                }
+                if(qu.size() == 0){
+                    re++;
+                }
+            }
+        }
+    }
+}
+void solve(long double phi, long double lam){
+    int N[5] = {113,174,267,357};
+    long double ans[95] = {};
+    for(int B = 0; B <= 0; B++){
+        for(int R = 0; R <= 90; R++){
+            for(int q = 0; q <= 4; q++){
+                for(int i = -75; i <= 75; i++){
+                    long double sin_H,sin_fi;
+                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,((phi) * M_PI)/180,((lam) * M_PI)/180,((i) * M_PI)/180,&sin_H,&sin_fi);
+                    ans[R] += IBR * is_out(sin_H,sin_fi);
+                }
+            }
+        }
+    }
+}
 int main(){
     IOS
-    long double N = 365,R,B,phi,lam = -5;
-    special_point();
-//    if(!init(&N,&R,&B,&phi,&lam))return 0;
-//    solve();
+    long double phi,lam = -5;
+//    special_point();
+    if(!init(&phi,&lam))return 0;
+    solve(phi,lam);
 //    output();
 }
