@@ -1,5 +1,5 @@
 name	p1	p2	p3	p4
-grorge		AC 			
+grorge			WA 		
 test1					
 test2					
 test3					

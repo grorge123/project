@@ -161,20 +161,17 @@ int edit_number(string address,string inp,string special,string ans){
     while(file_ans.getline(tmp,sizeof(tmp))){
         all_ans += tmp;
     }
-    cout << "debug:" << ' ' << all_inp << endl;
-    cout << "debug2:" << ' ' << all_ans << endl;
     memset(LCS,0,sizeof(LCS));
     for(int i = 1; i <= (int)all_inp.size(); i++){
         for(int q = 1; q <= (int)all_ans.size(); q++){
-            if(all_inp[i-1] == all_ans[i-1]){
-                LCS[i][q] = LCS[i-1][q-1]+1;
+            if(all_inp[i - 1] == all_ans[q - 1]){
+                LCS[i][q] = LCS[i - 1][q - 1] + 1;
             }else{
-                LCS[i][q] = max(LCS[i-1][q],LCS[i][q-1]);
+                LCS[i][q] = max(LCS[i - 1][q],LCS[i][q - 1]);
             }
         }
     }
-    cout << "debug3:" << (int)all_ans.size() - LCS[all_inp.size() - 1][all_ans.size() - 1] << ' ' << (int)all_ans.size() << ' ' << LCS[all_inp.size() - 1][all_ans.size() - 1] << endl;
-    if((int)all_ans.size() - LCS[all_inp.size() - 1][all_ans.size() - 1] <= MAX_num){
+    if(max((int)all_ans.size(),(int)all_inp.size()) - LCS[all_inp.size()][all_ans.size()] <= MAX_num){
         return 1;
     }else{
         return 3;

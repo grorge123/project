@@ -121,7 +121,7 @@ void solve (Problem problem[],People people[],Problem now_pro,People now_peo,str
         cout << "I can't find this type!!"<<endl;
         return;
     }
-    if(people[now_peo.id].score[now_pro.name[1]-'0'] != change(result)){
+    if(people[now_peo.id].score[now_pro.name[1]-'0'] != change(result) && people[now_peo.id].score[now_pro.name[1]-'0'] != "AC "){
         people[now_peo.id].score[now_pro.name[1]-'0'] = change(result);
         cout << "debug8:" << now_peo.id << ' ' << now_pro.name[1]-'0' << ' ' << people[now_peo.id].score[now_pro.name[1]-'0'] << endl;
         update_score(people,problem,all_pro,all_peo,address);
