@@ -238,7 +238,7 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
         else px = -1;
         if(Y > ny)py = 1;
         else py = -1;
-        nx += px;
+//        nx += px;
         cout << "debug7:" << m << ' ' << nx << ' ' << ny << ' ' << px << ' ' << py << endl;
         while(nx >= 0 && nx < n && ny >= 0 && ny < n){
             while(ny >= 0 && ny < n){
@@ -264,7 +264,7 @@ int is_out(long double sin_H,long double sin_fi){
         for(int q = ra.S; q <= rb.S; q++){
             if(is_solar[i][q]){
                 queue<pii> qu;
-                get_hourse(qu,pii(q,i),sin_H,sin_fi);
+                get_hourse(qu,pii(i,q),sin_H,sin_fi);
                 long double lb = asin (sin_H) * 180.0 / M_PI;
                 cout << "debug2:" << qu.size() << endl;
                 while(!qu.empty()){
