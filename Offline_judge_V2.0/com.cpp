@@ -17,7 +17,11 @@ int compile(string address,string inp,string pro,int tim,int type){
     else if(type == 1)
         file.open("./"+address+"/ans/"+inp+".cpp",ios::in);
     if(!file)return 0;
-    string cmd = "g++ -g -O2 -std=gnu++11 -o ./" + address + "/out/" + inp + ".exe" + " ./" + address + "/inp/" + inp + ".cpp";
+    string cmd;
+    if(type == 0)
+        cmd = "g++ -g -O2 -std=gnu++11 -o ./" + address + "/out/" + inp + ".exe" + " ./" + address + "/inp/" + inp + ".cpp";
+    else if(type == 1)
+        cmd = "g++ -g -O2 -std=gnu++11 -o ./" + address + "/out/" + inp + ".exe" + " ./" + address + "/ans/" + inp + ".cpp";
     cout << cmd << endl;
     if(system(cmd.c_str())){
         return 0;
@@ -25,8 +29,8 @@ int compile(string address,string inp,string pro,int tim,int type){
     string cmdS;
     if(type == 0)
         cmdS = address + "\\out\\" + inp + ".exe < " + address + "\\pro\\" + pro + ".txt > " + address + "\\judge\\" + inp + ".txt";
-    else
-        cmdS = address + "\\out\\" + inp + ".exe < " + address + "\\inp\\" + pro + ".txt > " + address + "\\judge\\" + inp + ".txt";
+    else if(type == 1)
+        cmdS = address + "\\out\\" + inp + ".exe < " + address + "\\inp\\" + pro + ".cpp > " + address + "\\judge\\" + inp + ".txt";
     cout << cmdS<<endl;
     auto time_start = steady_clock::now();
     if(system(cmdS.c_str()))return 4;
@@ -71,7 +75,7 @@ int special_judge(string address,string inp,string special,int type){
     if(type == 0){
         file.open("./"+address+"/special/"+special+".cpp",ios::in);//將special judge做編譯,然後以inp的名稱存到out然後丟inp.txt進去exe把結果存到inp.txt
         if(!file){
-            cout << "I can't find " + special << endl;
+            cout << "(1)I can't find " + special << endl;
             return 5;
         }
         string cmd = "g++ -g -O2 -std=gnu++11 -o ./" + address + "/out/" + inp + ".exe" + " ./" + address + "/special/" + special + ".cpp";
@@ -80,13 +84,13 @@ int special_judge(string address,string inp,string special,int type){
             cout << "special judge CE " + special<<endl;
             return 5;
         }
-        string cmdS = address + "\\out\\" + inp + ".exe < " + address + "\\inp\\" + inp + ".txt > " + address + "\\judge\\" + inp + ".txt";
+        string cmdS = address + "\\out\\" + inp + ".exe < " + address + "\\inp\\" + inp + ".cpp > " + address + "\\judge\\" + inp + ".txt";
         cout << cmdS<<endl;
-        if(system(cmdS.c_str()))return 4;
+        return system(cmdS.c_str());
     }else if(type == 1){
         file.open("./"+address+"/special/"+special+".cpp",ios::in);
         if(!file){
-            cout << "I can't find " + special<<endl;
+            cout << "(2)I can't find " + special<<endl;
             return 5;
         }
         string cmd = "g++ -g -O2 -std=gnu++11 -o ./" + address + "/out/" + inp + ".exe" + " ./" + address + "/special/" + special + ".cpp";
@@ -141,12 +145,12 @@ int tonumber(string special){
 }
 int LCS[10005][10005]={};
 int edit_number(string address,string inp,string special,string ans){
-    int MAX_num = tonumber(ans);
+    int MAX_num = tonumber(special);
     fstream file_inp,file_ans;
     file_inp.open("./" + address + "/inp/" + inp + ".cpp",ios::in);
     file_ans.open("./" + address + "/ans/" + ans + ".cpp",ios::in);
     if(!file_ans){
-        cout << "I can't find" << ans << endl;
+        cout << "(3)I can't find" << ans << endl;
         return 5;
     }
     string all_inp,all_ans;
@@ -157,15 +161,19 @@ int edit_number(string address,string inp,string special,string ans){
     while(file_ans.getline(tmp,sizeof(tmp))){
         all_ans += tmp;
     }
-    for(int i = 0; i <= (int)all_inp.size(); i++){
-        for(int q = 0; q <= (int)all_ans.size(); q++){
-            if(all_inp[i] == all_ans[i]){
+    cout << "debug:" << ' ' << all_inp << endl;
+    cout << "debug2:" << ' ' << all_ans << endl;
+    memset(LCS,0,sizeof(LCS));
+    for(int i = 1; i <= (int)all_inp.size(); i++){
+        for(int q = 1; q <= (int)all_ans.size(); q++){
+            if(all_inp[i-1] == all_ans[i-1]){
                 LCS[i][q] = LCS[i-1][q-1]+1;
             }else{
                 LCS[i][q] = max(LCS[i-1][q],LCS[i][q-1]);
             }
         }
     }
+    cout << "debug3:" << (int)all_ans.size() - LCS[all_inp.size() - 1][all_ans.size() - 1] << ' ' << (int)all_ans.size() << ' ' << LCS[all_inp.size() - 1][all_ans.size() - 1] << endl;
     if((int)all_ans.size() - LCS[all_inp.size() - 1][all_ans.size() - 1] <= MAX_num){
         return 1;
     }else{
@@ -191,7 +199,7 @@ void update_score(People people[],Problem problem[],int all_pro,int all_peo,stri
     for(int i = 1; i <= all_peo; i++){
         file << people[i].name;
         for(int q = 0; q <= all_pro; q++){
-            file << '\t' << people[i].score[q];
+            file << people[i].score[q] << '\t' ;
         }
         file << '\n';
     }
@@ -199,7 +207,7 @@ void update_score(People people[],Problem problem[],int all_pro,int all_peo,stri
 }
 string write(int result,string address,string inp){
         fstream file;
-        file.open("./" + address + "/score/" + inp + ".txt",ios::ate);
+        file.open("./" + address + "/score/" + inp + ".txt",ios::app);
         string re;
         switch(result){
         case 0:
@@ -229,8 +237,8 @@ string write(int result,string address,string inp){
         }
         time_t now = time(0);
         char* dt = ctime(&now);
-        file << dt << endl;
-        file << re << endl;
+        file << dt ;
+        file << re << endl << endl;
         file.close();
     return re;
 }

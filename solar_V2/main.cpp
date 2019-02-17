@@ -29,6 +29,7 @@ struct cycle{
 long double all = 0;
 int n;
 int s[10005][10005]={};
+pii ra,rb;
 bool is_solar[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
     return (cos(del) * sin_om)/cos_H;
@@ -120,7 +121,7 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     return f_IBR(IsBR,IbBR,IrBR);
 }
 inline bool init(long double* phi,long double* lam){
-    int m = 0;
+    int m = 1;
     string address;
     cout << "input the file name:";
     cin >> address;
@@ -130,16 +131,16 @@ inline bool init(long double* phi,long double* lam){
     cout << "input Longitude:";
     cin >> *lam;
     *lam = ((*lam) * M_PI)/180;
-    cout << "How many solar do you want to build?";
-    cin >> m;
+//    cout << "How many solar do you want to build?";
+//    cin >> m;
     for(int i = 0; i < m; i++){
-        pair<int,int> a,b;
-        cout << "input upper left corner:";
-        cin >> a.F >> b.S;
-        cout << "input lower right corner:";
-        cin >> b.F >> b.S;
-        for(int i = a.F; i <= b.F; i++){
-            for(int q= a.S; q <= b.S; q++){
+//        pair<int,int> a,b;
+        cout << "input the solar upper left corner:";
+        cin >> ra.F >> ra.S;
+        cout << "input the solar lower right corner:";
+        cin >> rb.F >> rb.S;
+        for(int i = ra.F; i <= rb.F; i++){
+            for(int q= ra.S; q <= rb.S; q++){
                 is_solar[i][q] = 1;
             }
         }
@@ -252,8 +253,8 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
 }
 int is_out(long double sin_H,long double sin_fi){
     int re = 0;
-    for(int i = 0; i < n; i++){
-        for(int q = 0; q < n; q++){
+    for(int i = ra.F; i <= rb.F; i++){
+        for(int q = ra.S; q <= rb.S; q++){
             if(is_solar[i][q]){
                 queue<pii> qu;
                 get_hourse(qu,pii(i,q),sin_H,sin_fi);
@@ -261,7 +262,7 @@ int is_out(long double sin_H,long double sin_fi){
                 while(!qu.empty()){
                     pii now = qu.front();
                     long double lx = sqrt( (now.F - i) * (now.F - i) + (now.S - q) * (now.S - q) );
-                    if( lb < atan(s[now.F][now.S] / lx)){
+                    if((s[now.F][now.S] < s[i][q]) || ( lb > atan((s[now.F][now.S] - s[i][q]) / lx))){
                         qu.pop();
                     }else{
                         break;
@@ -273,6 +274,7 @@ int is_out(long double sin_H,long double sin_fi){
             }
         }
     }
+    return re;
 }
 void solve(long double phi, long double lam){
     int N[5] = {113,174,267,357};

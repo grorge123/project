@@ -24,6 +24,8 @@ string change(int result){
         case 5:
             re = "SE ";
             break;
+        default:
+            re = "WTF!";
     }
     return re;
 }
@@ -52,7 +54,7 @@ void restart (Problem problem[],People people[],string *address,int *all_pro,int
     }
     index >> *all_peo;
     for(int i = 1; i <= *all_peo; i++){
-        people[i].name = i;
+        people[i].id = i;
         index >> people[i].name;
     }
 }
@@ -93,9 +95,9 @@ void solve (Problem problem[],People people[],Problem now_pro,People now_peo,str
         result = special_judge(address,now_peo.name+"_"+now_pro.name,now_pro.special,0);
         if(result == 1){
             if(now_pro.is_strict)
-                result = strict_judge(address,now_peo.name+"_"+now_pro.name,now_pro.name);
+                result = strict_judge(address,now_peo.name+"_"+now_pro.name,now_pro.name) == 3 ? 1 : 3;
             else
-                result = judge(address,now_peo.name+"_"+now_pro.name,now_pro.name);
+                result = judge(address,now_peo.name+"_"+now_pro.name,now_pro.name) == 3 ? 1 : 3;
         }
         rm(address,now_peo.name+"_"+now_pro.name);
     }else if(now_pro.type=="debug"){
@@ -106,8 +108,9 @@ void solve (Problem problem[],People people[],Problem now_pro,People now_peo,str
             else
                 result = judge(address,now_peo.name+"_"+now_pro.name,now_pro.name);
         }
+        if(result == 1)
+            result = edit_number(address,now_peo.name+"_"+now_pro.name,now_pro.special,now_pro.ans);
         rm(address,now_peo.name+"_"+now_pro.name);
-        result = edit_number(address,now_peo.name+"_"+now_pro.name,now_pro.special,now_pro.ans);
     }else if(now_pro.type=="special"){
         result = compile(address,now_peo.name+"_"+now_pro.name,now_pro.name,now_pro.time,0);
         if(result==1){
@@ -120,6 +123,7 @@ void solve (Problem problem[],People people[],Problem now_pro,People now_peo,str
     }
     if(people[now_peo.id].score[now_pro.name[1]-'0'] != change(result)){
         people[now_peo.id].score[now_pro.name[1]-'0'] = change(result);
+        cout << "debug8:" << now_peo.id << ' ' << now_pro.name[1]-'0' << ' ' << people[now_peo.id].score[now_pro.name[1]-'0'] << endl;
         update_score(people,problem,all_pro,all_peo,address);
     }
     cout << now_peo.name<<' '<<now_pro.name<<' '<<write(result,address,now_peo.name)<<endl;
