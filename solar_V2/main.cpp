@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <math.h>
+#include <fstream>
 using namespace std;
 #define IOS ios::sync_with_stdio();cin.tie(0);
 #define endl '\n'
@@ -158,6 +159,12 @@ inline bool init(long double* phi,long double* lam){
             file >> s[i][q];
         }
     }
+    for(int i = 0; i < n; i++){
+        for(int q = 0; q < n; q++){
+            cout << s[i][q] << ' ' ;
+        }
+        cout << endl;
+    }
     return 1;
 }
 void special_point(){
@@ -173,86 +180,61 @@ void special_point(){
 //            cout << "方位:" << i << ' ' << "傾斜:" << q << ' '<< "能量:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
 //        }
 //    }
-//    for(int i = -20;i <= 20 ;i += 5){
+    for(int i = 0;i <= 20 ;i += 5){
         all = 0;
         for(int q = -75; q <= 75; q+=15){
-
-            cout <<  get_IBR(113, ((87) * M_PI)/180, ((0) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q)<< endl;
-//            all += get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-//            all += get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-//            all += get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            all += get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            all += get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            all += get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            all += get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+            cout << get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+            cout << get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+            cout << get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+            cout << get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
         }
-//        cout << all << ',';
+        cout << all << ',';
+        cout << endl;
 //        if(i == 40) i-=5;
 //        else if(i == 45) i-=5;
-//    }
+    }
 }
 void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
-//    cout << "debug3:" << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
-    pii center = {n/2,n/2};
-    long double X = ((sun * cos(asin(sin_H))) * sin_fi * -1) + center.F,Y = ((sun * cos(asin(sin_H))) * cos(asin(sin_H)) * -1) + center.S;
-    now.F = n/2 - now.F;now.S -= n/2;
-//    cout << "debug5:" << center .F << ' ' << X << ' ' << Y << ' ' << now.F << ' ' << now.S << endl;
-    if(X - center.F == 0){
-        if(Y > center.S){
-            for(int i = center.S; i <= Y; i++){
-                if(i < n){
-                    qu.push(pii(X,i));
-                }else{
-                    break;
-                }
-            }
-        }else{
-            for(int i = center.S; i >= Y; i--){
-                if(i >= 0){
-                    qu.push(pii(X,i));
-                }else{
-                    break;
-                }
-            }
+    long double X = ((sun * cos(asin(sin_H))) * sin_fi * -1),Y = ((sun * cos(asin(sin_H))) * cos(asin(sin_fi)));
+    int px,py;
+    if(X > now.F)px = 1;
+    else px = -1;
+    if(Y > now.S)py = 1;
+    else py = -1;
+    if(X - now.F == 0){
+        for(int i = now.S; i >=0 && i < n; i += py){
+            qu.push(pii(i,now.F));
         }
-    }else if(Y - center.S == 0){
-        if(X > center.F){
-            for(int i = center.F; i <= X; i++){
-                if(i < n){
-                    qu.push(pii(i,Y));
-                }else{
-                    break;
-                }
-            }
-        }else{
-            for(int i = center.F; i >= X; i--){
-                if(i >= 0){
-                    qu.push(pii(i,Y));
-                }else{
-                    break;
-                }
-            }
+    }else if(Y - now.S == 0){
+        for(int i = now.F; i >=0 && i < n; i += px){
+            qu.push(pii(now.S,i));
         }
     }else{
-        //y−center.S=m(x−center.F)
-        //y-center.S=m*x-m*center.F
-        //y-m*x-center.S-m*center.F=0
-        int px,py,nx = now.F,ny = now.S;
-        long double m = (Y - ny) / (X - nx);
-        if(X > nx)px = 1;
-        else px = -1;
-        if(Y > ny)py = 1;
-        else py = -1;
-//        nx += px;
-//        cout << "debug7:" << m << ' ' << nx << ' ' << ny << ' ' << px << ' ' << py << endl;
-        while(nx >= n * -1 && nx < n && ny >= n * -1 && ny < n){
-//            cout << "debug9:" << nx << ' ' << ny << ' ' << abs(ny - (m * nx) - ny - (m * nx)) / sqrt(1.0 + pow(m,2)) << endl;
-            while(ny >= 0 && ny < n){
-                if(abs(ny - (m * nx) - ny - (m * nx)) / sqrt(1.0 + pow(m,2))>0.5){
+        //Y - now.S = m*(X - now.F)
+        //Y - m*X - now.S + m*now.F = 0
+        long double m = (Y - now.S) / (X - now.F);
+//        cout << "debug1:" << ' ' << m << endl;
+        int nx = now.F,ny = now.S;
+        while(nx >= 0 && nx < n&& ny >=0 && ny < n){
+//            cout << nx << ' ' << ny << ' ' << abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) << endl;
+            while(ny < n && ny >= 0){
+                if(abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) > 0.5){
                     ny += py;
                 }else{
                     break;
                 }
             }
-            for(int i = ny; i >= n * -1 && i < n; i += py){
-                if(abs(i - (m * nx) - i - (m * nx)) / sqrt(1.0 + pow(m,2))<=0.5){
-                    qu.push(pii(nx,ny));
+            for(int i = ny; i >= 0 && i < n ; i += py){
+//                printf("%d %lf\n",i,abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)));
+//                cout << i << ' ' << abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) << endl;
+                if(abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) <= 0.5 && (nx != now.F || i !=now.S)){
+                    qu.push(pii(i,nx));
+                }else if(abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) > 0.5){
+                    break;
                 }
             }
             nx += px;
@@ -271,8 +253,10 @@ int is_out(long double sin_H,long double sin_fi){
 //                cout << "debug2:" << qu.size() << endl;
                 while(!qu.empty()){
                     pii now = qu.front();
+//                    cout << "debug3:" << now.F << ' ' << now.S << endl;
                     long double lx = sqrt( (now.F - i) * (now.F - i) + (now.S - q) * (now.S - q) );
-                    if((s[now.F][now.S] < s[i][q]) || ( lb > atan((s[now.F][now.S] - s[i][q]) / lx))){
+//                    cout << lb << ' ' << atan((s[now.F][now.S] - s[i][q]) / lx) * 180.0 / M_PI << ' ' << (s[now.F][now.S] - s[i][q]) << ' ' << lx << endl;
+                    if((s[now.F][now.S] < s[i][q]) || ( lb > atan((s[now.F][now.S] - s[i][q]) / lx) * 180.0 / M_PI)){
                         qu.pop();
                     }else{
                         break;
@@ -286,36 +270,46 @@ int is_out(long double sin_H,long double sin_fi){
     }
     return re;
 }
-void solve(long double phi, long double lam){
+void solve(long double phi, long double lam,long double ans[]){
     int N[5] = {113,174,267,357};
-    long double ans[95] = {};
-    for(int B = 0; B <= 0; B++){
-        for(int R = 0; R <= 90; R++){
-            for(int q = 0; q <= 0; q++){
+    for(int R = 0; R <= 0; R++){
+        for(int B = 0; B <= 90; B++){
+            for(int q = 0; q <= 3; q++){
                 for(int i = -75; i <= 75; i += 15){
                     long double sin_H,sin_fi;
-                    cout << "debug3" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
+//                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
                     long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&sin_fi);
                     int tmp = is_out(sin_H,sin_fi);
-                    cout << "debug4:" << IBR << ' ' << tmp << endl;
-                    ans[R] += IBR * tmp;
+//                    cout << "debug4:" << IBR << ' ' << tmp << endl;
+                    ans[B] += IBR * tmp;
 //                    system("pause");
                 }
             }
-            cout << "debug11" << ans[R] << endl;
-            system("pause");
+//            cout << "debug11:" << ans[B] << endl;
+//            system("pause");
         }
     }
     for(int i = 0; i <= 90; i++){
         cout << ans[i] << ',';
     }
 }
+void output(long double ans[95]){
+    fstream file;
+    file.open("out.csv",ios::out);
+    for(int i = 0; i <= 90; i++){
+        file << ans[i];
+        file << ',';
+    }
+    file.close();
+}
 int main(){
     IOS
-    special_point();
+//    special_point();
     long double phi,lam = -5;
+    long double ans[95] = {};
     if(!init(&phi,&lam))return 0;
-    solve(phi,lam);
+    solve(phi,lam,ans);
+    output(ans);
     system("pause");
     return 0;
 }
