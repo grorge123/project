@@ -10,6 +10,35 @@ using namespace std;
 #define F first
 #define S second
 #define pii pair<int,int>
+///////////////////////////////debug////////////////////////////////////////
+//#define grorge
+#ifdef grorge
+#define debug(...) do{\
+    fprintf(stderr,"%s - %d (%s) = ",__PRETTY_FUNCTION__,__LINE__,#__VA_ARGS__);\
+    _do(__VA_ARGS__);\
+}while(0)
+template<typename T>void _do(T &&_x){cerr<<_x<<endl;}
+template<typename T,typename ...S> void _do(T &&_x,S &&..._t){cerr<<_x<<" ,";_do(_t...);}
+template<typename _a,typename _b> ostream& operator << (ostream &_s,const pair<_a,_b> &_p){return _s<<"("<<_p.X<<","<<_p.Y<<")";}
+template<typename It> ostream& _OUTC(ostream &_s,It _ita,It _itb)
+{
+    _s<<"{";
+    for(It _it=_ita;_it!=_itb;_it++)
+    {
+        _s<<(_it==_ita?"":",")<<*_it;
+    }
+    _s<<"}";
+    return _s;
+}
+template<typename _a> ostream &operator << (ostream &_s,vector<_a> &_c){return _OUTC(_s,ALL(_c));}
+template<typename _a> ostream &operator << (ostream &_s,set<_a> &_c){return _OUTC(_s,ALL(_c));}
+template<typename _a,typename _b> ostream &operator << (ostream &_s,map<_a,_b> &_c){return _OUTC(_s,ALL(_c));}
+template<typename _t> void pary(_t _a,_t _b){_OUTC(cerr,_a,_b);cerr<<endl;}
+#else
+#define debug(...)
+#define pary(...)
+#endif
+///////////////////////////////////////////////////////////////////////////////
 //ψ = fi
 //δ = del
 //ω = om
@@ -85,7 +114,7 @@ inline long double f_ro(long double NS){
     return 0.55;//new concrete Typical albedo (https://en.wikipedia.org/wiki/Albedo)
 //    return 0.2 * (1 - NS) + 0.7 * NS;
 }
-inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_sin_fi){
+inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_sin_fi,long double* s_IsBR){
     om = ((om) * M_PI)/180;
     long double X = f_X(N);
 //    long double E = f_E(X);
@@ -101,6 +130,7 @@ inline long double get_IBR(long double N,long double R,long double B,long double
 //    cout << sin_fi << endl;
     *s_sin_H = sin_H;
     *s_sin_fi = sin_fi;
+    *s_IsBR = IsBR;
     all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
@@ -217,7 +247,7 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
         //Y - now.S = m*(X - now.F)
         //Y - m*X - now.S + m*now.F = 0
         long double m = (Y - now.S) / (X - now.F);
-//        cout << "debug1:" << ' ' << m << endl;
+//        cout << "debug1:" << m << endl;
         int nx = now.F,ny = now.S;
         while(nx >= 0 && nx < n&& ny >=0 && ny < n){
 //            cout << nx << ' ' << ny << ' ' << abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) << endl;
@@ -229,9 +259,9 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
                 }
             }
             for(int i = ny; i >= 0 && i < n ; i += py){
-//                printf("%d %lf\n",i,abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)));
+//                printf("%d %llf %llf %llf %d\n",i,abs(i - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)),abs(i - m*nx - now.S + m * now.F),sqrt(1.0 + pow(m,2.0)),(abs(i - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) <= 0.5 && (nx != now.F || i !=now.S)));
 //                cout << i << ' ' << abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) << endl;
-                if(abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) <= 0.5 && (nx != now.F || i !=now.S)){
+                if(abs(i - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) <= 0.5 && (nx != now.F || i !=now.S)){
                     qu.push(pii(i,nx));
                 }else if(abs(ny - m*nx - now.S + m * now.F) / sqrt(1.0 + pow(m,2.0)) > 0.5){
                     break;
@@ -242,20 +272,23 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
     }
     return;
 }
-int is_out(long double sin_H,long double sin_fi){
-    int re = 0;
+pii is_out(long double sin_H,long double sin_fi){
+    int re = 0,cont = 0;
     for(int i = ra.F; i <= rb.F; i++){
         for(int q = ra.S; q <= rb.S; q++){
             if(is_solar[i][q]){
+                cont++;
                 queue<pii> qu;
                 get_hourse(qu,pii(q,i),sin_H,sin_fi);
                 long double lb = asin (sin_H) * 180.0 / M_PI;
 //                cout << "debug2:" << qu.size() << endl;
+                debug("debug2:",qu.size());
                 while(!qu.empty()){
                     pii now = qu.front();
 //                    cout << "debug3:" << now.F << ' ' << now.S << endl;
                     long double lx = sqrt( (now.F - i) * (now.F - i) + (now.S - q) * (now.S - q) );
 //                    cout << lb << ' ' << atan((s[now.F][now.S] - s[i][q]) / lx) * 180.0 / M_PI << ' ' << (s[now.F][now.S] - s[i][q]) << ' ' << lx << endl;
+                    debug(lb,atan((s[now.F][now.S] - s[i][q]) / lx) * 180.0 / M_PI,(s[now.F][now.S] - s[i][q]),lx);
                     if((s[now.F][now.S] < s[i][q]) || ( lb > atan((s[now.F][now.S] - s[i][q]) / lx) * 180.0 / M_PI)){
                         qu.pop();
                     }else{
@@ -268,7 +301,7 @@ int is_out(long double sin_H,long double sin_fi){
             }
         }
     }
-    return re;
+    return pii(re,cont);
 }
 void solve(long double phi, long double lam,long double ans[]){
     int N[5] = {113,174,267,357};
@@ -276,12 +309,13 @@ void solve(long double phi, long double lam,long double ans[]){
         for(int B = 0; B <= 90; B++){
             for(int q = 0; q <= 3; q++){
                 for(int i = -75; i <= 75; i += 15){
-                    long double sin_H,sin_fi;
+                    long double sin_H,sin_fi,IsBR;
 //                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
-                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&sin_fi);
-                    int tmp = is_out(sin_H,sin_fi);
-//                    cout << "debug4:" << IBR << ' ' << tmp << endl;
-                    ans[B] += IBR * tmp;
+                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&sin_fi,&IsBR);
+                    pii tmp = is_out(sin_H,sin_fi);
+//                    cout << "debug4:" << IBR << ' ' << tmp.F << ' ' << tmp.S << endl;
+                    ans[B] += IBR * tmp.F;
+                    ans[B] += IsBR * (tmp.S - tmp.F);
 //                    system("pause");
                 }
             }
