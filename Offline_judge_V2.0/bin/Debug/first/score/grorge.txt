@@ -34,3 +34,15 @@ WA!!Your program runs result is not same as anser!!!(Be careful!!!Otherwise you 
 Tue Feb 19 11:19:55 2019
 WA!!Your program runs result is not same as anser!!!(Be careful!!!Otherwise you will see me again) *(O_O)/*
 
+Wed Feb 20 07:57:37 2019
+Wow!That is AC!!!You are so smart!
+
+Wed Feb 20 08:04:16 2019
+Wow!That is AC!!!You are so smart!
+
+Wed Feb 20 08:05:33 2019
+Wow!That is AC!!!You are so smart!
+
+Wed Feb 20 08:06:20 2019
+Wow!That is AC!!!You are so smart!
+

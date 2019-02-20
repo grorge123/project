@@ -28,7 +28,7 @@
 1549414070 d:\desktop\offline_judge\com.h
 	"struct.h"
 
-1550380343 source:d:\desktop\github\project\offline_judge_v2.0\fun.cpp
+1550620897 source:d:\desktop\github\project\offline_judge_v2.0\fun.cpp
 	<iostream>
 	<fstream>
 	"com.h"
@@ -47,7 +47,7 @@
 1549380006 d:\desktop\github\project\offline_judge_v2.0\fun.h
 	"struct.h"
 
-1550379905 source:d:\desktop\github\project\offline_judge_v2.0\com.cpp
+1550620558 source:d:\desktop\github\project\offline_judge_v2.0\com.cpp
 	<iostream>
 	<vector>
 	<stdlib.h>

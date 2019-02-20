@@ -25,7 +25,7 @@ string change(int result){
             re = "SE ";
             break;
         default:
-            re = "WTF!";
+            re = "   ";
     }
     return re;
 }
@@ -57,6 +57,20 @@ void restart (Problem problem[],People people[],string *address,int *all_pro,int
         people[i].id = i;
         index >> people[i].name;
     }
+    fstream old;
+    cout << "./"+*address+"/.old.txt"<<endl;
+    old.open("./"+*address+"/.old.txt",ios::in);
+    if(old){
+        for(int i = 0; i <= *all_peo; i++){
+            for(int q = 0; q <= *all_pro; q++){
+                int tmp;
+                old >> tmp;
+                people[i].score[q] = change(tmp);
+            }
+        }
+        update_score(people,problem,*all_peo,*all_pro,*address);
+    }
+    return;
 }
 bool input (People people[],Problem problem[],People* now_peo,Problem* now_pro,string address,int all_pro,int all_peo){
     fstream now;

@@ -9,7 +9,25 @@
 #include "struct.h"
 using namespace std;
 using namespace std::chrono;
-
+int change(string result){
+    int re;
+    if(result == "CE "){
+        re = 0;
+    }else if(result == "AC "){
+        re = 1;
+    }else if(result == "TLE"){
+        re = 2;
+    }else if(result == "WA "){
+        re = 3;
+    }else if(result == "RE "){
+        re = 4;
+    }else if(result == "SE "){
+        re = 5;
+    }else{
+        re = 6;
+    }
+    return re;
+}
 int compile(string address,string inp,string pro,int tim,int type){
     fstream file;
     if(type == 0)
@@ -201,6 +219,17 @@ void update_score(People people[],Problem problem[],int all_pro,int all_peo,stri
         file << '\n';
     }
     file.close();
+    fstream old;
+    old.open("./" + address + "/.old.txt",ios::out);
+    for(int i = 0; i <= all_peo; i++){
+        for(int q = 0; q <= all_pro; q++){
+            int tmp = change(people[i].score[q]);
+            old << tmp;
+            old << ' ';
+        }
+        old << '\n';
+    }
+    return;
 }
 string write(int result,string address,string inp){
         fstream file;
