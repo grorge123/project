@@ -54,7 +54,6 @@ template<typename _t> void pary(_t _a,_t _b){_OUTC(cerr,_a,_b);cerr<<endl;}
 struct cycle{
     //球座標 ( r , θ , φ )
     //r = 半徑 θ = 跟z軸夾角 φ = 跟x軸夾角
-
 };
 long double all = 0;
 int n;
@@ -67,7 +66,6 @@ inline long double f_sin_fi(double long del,double long sin_om,long double cos_H
 inline long double f_fi(double long del,double long om,long double cos_sis,long double phi){
     long double cos_fi = (sin(del) * cos(phi) - cos(om) * cos(del) * sin(phi)) / (sin(acos(cos_sis)));
     long double fi = acos(cos_fi)*180/M_PI;
-
     if(om > 0){
         fi = 180 - fi;
     }else if(om <0){
@@ -75,6 +73,7 @@ inline long double f_fi(double long del,double long om,long double cos_sis,long 
     }else{
         fi = 0;
     }
+    cout << fi << ',';
     fi = fi*M_PI/180;
     return cos_fi;
 }
@@ -214,7 +213,7 @@ void special_point(){
 //        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
     for(int i = -75; i <= 75;i +=15){
 //        113,174,267,357
-        get_IBR(113,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,i);
+        get_IBR(357,((0) * M_PI)/180,((45) * M_PI)/180,((40) * M_PI)/180,((105) * M_PI)/180,i);
     }
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
@@ -349,7 +348,7 @@ void output(long double ans[95]){
 }
 int main(){
     IOS
-//    special_point();
+    special_point();
     long double phi,lam = -5;
     long double ans[95] = {};
     if(!init(&phi,&lam))return 0;
