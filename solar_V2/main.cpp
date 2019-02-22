@@ -214,7 +214,7 @@ void special_point(){
 //        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
     for(int i = -75; i <= 75;i +=15){
 //        113,174,267,357
-        get_IBR(174,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,i);
+        get_IBR(113,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,i);
     }
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
