@@ -64,6 +64,20 @@ bool is_solar[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
     return (cos(del) * sin_om)/cos_H;
 }
+inline long double f_fi(double long del,double long om,long double cos_sis,long double phi){
+    long double cos_fi = (sin(del) * cos(phi) - cos(om) * cos(del) * sin(phi)) / (sin(acos(cos_sis)));
+    long double fi = acos(cos_fi)*180/M_PI;
+
+    if(om > 0){
+        fi = 180 - fi;
+    }else if(om <0){
+        fi -= 180;
+    }else{
+        fi = 0;
+    }
+    fi = fi*M_PI/180;
+    return cos_fi;
+}
 inline long double f_sin_H(long double cos_phi,long double cos_del,long double cos_om,long double del,long double phi){
     return (cos_phi * cos_del * cos_om) + (sin(del) * sin(phi));
 }
@@ -114,7 +128,7 @@ inline long double f_ro(long double NS){
     return 0.55;//new concrete Typical albedo (https://en.wikipedia.org/wiki/Albedo)
 //    return 0.2 * (1 - NS) + 0.7 * NS;
 }
-inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_sin_fi,long double* s_IsBR){
+inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_fi,long double* s_IsBR){
     om = ((om) * M_PI)/180;
     long double X = f_X(N);
 //    long double E = f_E(X);
@@ -124,12 +138,11 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     long double IDN = f_IDN(I,sin_H),cos_si = f_cos_si(del,om,B,R,phi),IoH = f_IoH(sin_H,N);
     long double ISH = f_ISH(I,IDN,sin_H),ro = f_ro(0);
     long double IbBR = f_IbBR(IDN,cos_si),IsBR = f_IsBR(I,ISH,IoH,cos_si,sin_H,B),IrBR = f_IrBR(I,ro,B);
-    long double cos_H = cos(asin(sin_H));
-    long double sin_fi = f_sin_fi(del,sin(om),cos_H);
+    long double fi = f_fi(del,om,sin_H,phi);
 //    cout << N << ' ' << om/15+12 << ' ' << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
 //    cout << sin_fi << endl;
     *s_sin_H = sin_H;
-    *s_sin_fi = sin_fi;
+    *s_fi = fi;
     *s_IsBR = IsBR;
     all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
@@ -144,10 +157,8 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     long double IDN = f_IDN(I,sin_H),cos_si = f_cos_si(del,om,B,R,phi),IoH = f_IoH(sin_H,N);
     long double ISH = f_ISH(I,IDN,sin_H),ro = f_ro(0);
     long double IbBR = f_IbBR(IDN,cos_si),IsBR = f_IsBR(I,ISH,IoH,cos_si,sin_H,B),IrBR = f_IrBR(I,ro,B);
-    long double cos_H = cos(asin(sin_H));
-    long double sin_fi = f_sin_fi(del,sin(om),cos_H);
+    long double fi = f_fi(del,om,sin_H,phi);
 //    cout << N << ' ' << om/15+12 << ' ' << asin (sin_fi) * 180.0 / M_PI << ' ' << asin (sin_H) * 180.0 / M_PI << endl;
-//    cout << sin_fi << endl;
 //    all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
@@ -201,35 +212,35 @@ void special_point(){
 //    for(int i = -75; i < 75;i += 15){
 ////        113,174,267,357
 //        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
-//    for(int i = 0; i <= 90;i ++){
-////        113,174,267,357
-//        cout << 60 << ' ' << get_IBR(357,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,75) << endl;
-//    }
+    for(int i = -75; i <= 75;i +=15){
+//        113,174,267,357
+        get_IBR(174,((0) * M_PI)/180,((45) * M_PI)/180,((25) * M_PI)/180,((121) * M_PI)/180,i);
+    }
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
 //            cout << "方位:" << i << ' ' << "傾斜:" << q << ' '<< "能量:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
 //        }
 //    }
-    for(int i = 0;i <= 20 ;i += 5){
-        all = 0;
-        for(int q = -75; q <= 75; q+=15){
-            all += get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            all += get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            all += get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            all += get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
-            cout << get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
-            cout << get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
-            cout << get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
-            cout << get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
-        }
-        cout << all << ',';
-        cout << endl;
-//        if(i == 40) i-=5;
-//        else if(i == 45) i-=5;
-    }
+//    for(int i = 0;i <= 20 ;i += 5){
+//        all = 0;
+//        for(int q = -75; q <= 75; q+=15){
+//            all += get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+//            all += get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+//            all += get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+//            all += get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q);
+//            cout << get_IBR(113, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+//            cout << get_IBR(174, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+//            cout << get_IBR(267, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+//            cout << get_IBR(357, ((i) * M_PI)/180, ((21) * M_PI)/180, ((25) * M_PI)/180, ((121) * M_PI)/180,q) << endl;
+//        }
+//        cout << all << ',';
+//        cout << endl;
+////        if(i == 40) i-=5;
+////        else if(i == 45) i-=5;
+//    }
 }
-void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
-    long double X = ((sun * cos(asin(sin_H))) * sin_fi * -1),Y = ((sun * cos(asin(sin_H))) * cos(asin(sin_fi)));
+void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double fi){
+    long double X = ((sun * cos(asin(sin_H))) * sin(fi) * -1),Y = ((sun * cos(asin(sin_H))) * cos(fi));
     int px,py;
     if(X > now.F)px = 1;
     else px = -1;
@@ -272,14 +283,14 @@ void get_hourse(queue<pii>& qu,pii now,long double sin_H,long double sin_fi){
     }
     return;
 }
-pii is_out(long double sin_H,long double sin_fi){
+pii is_out(long double sin_H,long double fi){
     int re = 0,cont = 0;
     for(int i = ra.F; i <= rb.F; i++){
         for(int q = ra.S; q <= rb.S; q++){
             if(is_solar[i][q]){
                 cont++;
                 queue<pii> qu;
-                get_hourse(qu,pii(q,i),sin_H,sin_fi);
+                get_hourse(qu,pii(q,i),sin_H,fi);
                 long double lb = asin (sin_H) * 180.0 / M_PI;
 //                cout << "debug2:" << qu.size() << endl;
                 debug("debug2:",qu.size());
@@ -309,10 +320,10 @@ void solve(long double phi, long double lam,long double ans[]){
         for(int B = 0; B <= 90; B++){
             for(int q = 0; q <= 3; q++){
                 for(int i = -75; i <= 75; i += 15){
-                    long double sin_H,sin_fi,IsBR;
+                    long double sin_H,fi,IsBR;
 //                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
-                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&sin_fi,&IsBR);
-                    pii tmp = is_out(sin_H,sin_fi);
+                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR);
+                    pii tmp = is_out(sin_H,fi);
 //                    cout << "debug4:" << IBR << ' ' << tmp.F << ' ' << tmp.S << endl;
                     ans[B] += IBR * tmp.F;
                     ans[B] += IsBR * (tmp.S - tmp.F);
