@@ -127,7 +127,7 @@ inline long double f_ro(long double NS){
     return 0.55;//new concrete Typical albedo (https://en.wikipedia.org/wiki/Albedo)
 //    return 0.2 * (1 - NS) + 0.7 * NS;
 }
-inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_fi,long double* s_IsBR){
+inline long double get_IBR(long double N,long double R,long double B,long double phi,long double lam,long double om, long double* s_sin_H,long double* s_fi,long double* s_IsBR,long double *s_IrBR){
     om = ((om) * M_PI)/180;
     long double X = f_X(N);
 //    long double E = f_E(X);
@@ -143,6 +143,7 @@ inline long double get_IBR(long double N,long double R,long double B,long double
     *s_sin_H = sin_H;
     *s_fi = fi;
     *s_IsBR = IsBR;
+    *s_IrBR = IrBR;
     all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
@@ -319,12 +320,13 @@ void solve(long double phi, long double lam,long double ans[]){
         for(int B = 0; B <= 90; B++){
             for(int q = 0; q <= 3; q++){
                 for(int i = -75; i <= 75; i += 15){
-                    long double sin_H,fi,IsBR;
+                    long double sin_H,fi,IsBR,IrBR;
 //                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
-                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR);
+                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR,&IrBR);
                     pii tmp = is_out(sin_H,fi);
 //                    cout << "debug4:" << IBR << ' ' << tmp.F << ' ' << tmp.S << endl;
                     ans[B] += IBR * tmp.F;
+                    ans[B] -= IrBR * tmp.F;
                     ans[B] += IsBR * (tmp.S - tmp.F);
 //                    system("pause");
                 }
