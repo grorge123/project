@@ -73,7 +73,7 @@ inline long double f_fi(double long del,double long om,long double cos_sis,long 
     }else{
         fi = 0;
     }
-    cout << fi << ',';
+//    cout << fi << ',';
     fi = fi*M_PI/180;
     return cos_fi;
 }
@@ -326,7 +326,7 @@ void solve(long double phi, long double lam,long double ans[]){
                     pii tmp = is_out(sin_H,fi);
 //                    cout << "debug4:" << IBR << ' ' << tmp.F << ' ' << tmp.S << endl;
                     ans[B] += IBR * tmp.F;
-                    ans[B] -= IrBR * tmp.F;
+//                    ans[B] -= IrBR * tmp.F;
                     ans[B] += IsBR * (tmp.S - tmp.F);
 //                    system("pause");
                 }
@@ -350,7 +350,7 @@ void output(long double ans[95]){
 }
 int main(){
     IOS
-    special_point();
+//    special_point();
     long double phi,lam = -5;
     long double ans[95] = {};
     if(!init(&phi,&lam))return 0;
