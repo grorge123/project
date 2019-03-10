@@ -334,7 +334,8 @@ pair<long double,long double> solve(long double phi, long double lam){
     }
     retu.F = l;
     retu.S = 0;
-    /*此為計算最佳方位角為了效能考量先以0為預設
+//    此為計算最佳方位角為了效能考量先以0為預設
+    /*
     l = -90,r = 90;
     while(r - l >=0.001){
         l2 = l + (r - l) / 3;r2 = r - (r - l) / 3;
