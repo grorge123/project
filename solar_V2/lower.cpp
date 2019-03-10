@@ -297,7 +297,7 @@ pii is_out(long double sin_H,long double fi){
     }
     return pii(re,cont);
 }
-long double solve(long double phi, long double lam){
+pair<long double,long double> solve(long double phi, long double lam){
     pii tmp[400][15] = {};
     for(int i = 1 ; i <= 365 ; i++){
         for(int q = -75 ; q <= 75 ; q += 15){
@@ -307,7 +307,8 @@ long double solve(long double phi, long double lam){
 
         }
     }
-    long double l = 0,r = 90,l2,r2,re;
+    long double l = 0,r = 90,l2,r2;
+    pair<long double,long double> retu;
     while(r - l >=0.001){
         l2 = l + (r - l) / 3;r2 = r - (r - l) / 3;
         long double IBR_l2 = 0,IBR_r2 = 0;
@@ -331,7 +332,36 @@ long double solve(long double phi, long double lam){
             l = l2;
         }
     }
-    return l;
+    retu.F = l;
+    retu.S = 0;
+    /*此為計算最佳方位角為了效能考量先以0為預設
+    l = -90,r = 90;
+    while(r - l >=0.001){
+        l2 = l + (r - l) / 3;r2 = r - (r - l) / 3;
+        long double IBR_l2 = 0,IBR_r2 = 0;
+        for(int i = 1 ; i <= 365 ; i++){
+            for(int q = -75 ; q <= 75 ; q += 15){
+                long double IrBR,IsBR,sin_H,fi;
+                long double IBR = get_IBR(i,(l2) * M_PI / 180,(retu.F) * M_PI /180,phi,lam,q,&sin_H,&fi,&IsBR,&IrBR);
+                IBR_l2 += IBR * tmp[i][(q+75)/15].F;
+//                IBR_l2 -= IrBR * tmp[i][(q+75)/15].F;
+                IBR_l2 += IsBR * (tmp[i][(q+75)/15].S - tmp[i][(q+75)/15].F);
+                IBR = get_IBR(i,(r2) * M_PI / 180,(retu.F) * M_PI /180,phi,lam,q,&sin_H,&fi,&IsBR,&IrBR);
+                IBR_r2 += IBR * tmp[i][(q+75)/15].F;
+//                IBR_r2 -= IrBR * tmp[i][(q+75)/15].F;
+                IBR_r2 += IsBR * (tmp[i][(q+75)/15].S - tmp[i][(q+75)/15].F);
+            }
+        }
+//        cout << l << ' ' << l2 << ' ' << r2 << ' '<< r << ' ' << IBR_l2 << ' ' << IBR_r2 << endl;
+        if(IBR_l2 > IBR_r2){
+            r = r2;
+        }else{
+            l = l2;
+        }
+    }
+    retu.S = l;
+    */
+    return retu;
 }
 void solve2(long double phi, long double lam,long double ans[]){
     pii tmp[400][15] = {};
@@ -383,7 +413,10 @@ int main(){
     long double phi,lam = -5,ans[95] = {};
     if(!init(&phi,&lam,&type))return 0;
     if(type == 1){
-        cout << solve(phi,lam) << endl;
+        pair<long double,long double> ans;
+        ans = solve(phi,lam);
+        cout << ans.F << ' ' ;
+        cout << setprecision(3) << ans.S << endl;
     }else if(type == 2){
         solve2(phi,lam,ans);
         output(ans);
