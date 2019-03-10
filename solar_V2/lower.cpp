@@ -51,10 +51,6 @@ template<typename _t> void pary(_t _a,_t _b){_OUTC(cerr,_a,_b);cerr<<endl;}
 //β = B 太陽能板的傾斜角
 //γ = R 太陽能板的方位角
 //θ = si
-struct cycle{
-    //球座標 ( r , θ , φ )
-    //r = 半徑 θ = 跟z軸夾角 φ = 跟x軸夾角
-};
 long double all = 0;
 int n;
 int s[10005][10005]={};
@@ -352,7 +348,7 @@ void solve2(long double phi, long double lam,long double ans[]){
         for(int q = 1 ; q <= 365 ; q++){
             for(int k = -75 ; k <= 75 ; k += 15){
                 long double IrBR,IsBR,sin_H,fi;
-                long double IBR = get_IBR(q,0,(i) * M_PI /180,phi,lam,k,&sin_H,&fi,&IsBR,&IrBR);
+                long double IBR = get_IBR(q,(0) * M_PI / 180,(i) * M_PI /180,phi,lam,k,&sin_H,&fi,&IsBR,&IrBR);
                 ans[i] += IBR * tmp[q][(k+75)/15].F;
 //                ans[i] -= IrBR * tmp[q][(k+75)/15].F;
                 ans[i] += IsBR * (tmp[q][(k+75)/15].S - tmp[q][(k+75)/15].F);
@@ -369,6 +365,11 @@ void solve2(long double phi, long double lam,long double ans[]){
 void output(long double ans[95]){
     fstream file;
     file.open("out.csv",ios::out);
+    for(int i = 0 ; i <= 90 ; i++){
+        file << i;
+        file << ',';
+    }
+    file << '\n';
     for(int i = 0; i <= 90; i++){
         file << ans[i];
         file << ',';

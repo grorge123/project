@@ -212,10 +212,18 @@ void special_point(){
 //    for(int i = -75; i < 75;i += 15){
 ////        113,174,267,357
 //        get_IBR(357,0,0,((25) * M_PI)/180,((121) * M_PI)/180,i);
-    for(int i = -75; i <= 75;i +=15){
-//        113,174,267,357
-        get_IBR(357,((0) * M_PI)/180,((45) * M_PI)/180,((40) * M_PI)/180,((105) * M_PI)/180,i);
+    long double ans = 0;
+    for(int d = -20 ; d <= 20 ;d += 5){
+        ans = 0;
+        for(int q = 1 ; q <= 365 ; q++){
+            for(int i = -75; i <= 75;i +=15){
+        //        113,174,267,357
+                ans += get_IBR(q,((d) * M_PI)/180,((25) * M_PI)/180,((40) * M_PI)/180,((105) * M_PI)/180,i);
+            }
+        }
+        cout << ans << ',';
     }
+    cout << endl<< endl;
 //    for(long double i = 0; i < 360; i++){
 //        for(long double q = 0; q < 360; q++){
 //            cout << "方位:" << i << ' ' << "傾斜:" << q << ' '<< "能量:" << get_IBR(365.0,i,q,25.0,121.0) << endl;
