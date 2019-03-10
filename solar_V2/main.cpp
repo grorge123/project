@@ -318,11 +318,11 @@ void solve(long double phi, long double lam,long double ans[]){
     int N[5] = {113,174,267,357};
     for(int R = 0; R <= 0; R++){
         for(int B = 0; B <= 90; B++){
-            for(int q = 0; q <= 3; q++){
+            for(int q = 1; q <= 365; q++){
                 for(int i = -75; i <= 75; i += 15){
                     long double sin_H,fi,IsBR,IrBR;
 //                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
-                    long double IBR = get_IBR(N[q],((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR,&IrBR);
+                    long double IBR = get_IBR(q,((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR,&IrBR);
                     pii tmp = is_out(sin_H,fi);
 //                    cout << "debug4:" << IBR << ' ' << tmp.F << ' ' << tmp.S << endl;
                     ans[B] += IBR * tmp.F;

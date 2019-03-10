@@ -171,11 +171,13 @@ inline long double get_IBR(long double N,long double R,long double B,long double
 //    all += IbBR;
     return f_IBR(IsBR,IbBR,IrBR);
 }
-inline bool init(long double* phi,long double* lam){
+inline bool init(long double* phi,long double* lam,int* type){
     int m = 1;
     char address[500];
     cout << "input the file name:";
     cin >> address;
+    cout << "which types do you want to use:(1:fast,2:detailed)";
+    cin >> *type;
     cout << "input Latitude:";
     cin >> *phi;
     *phi = ((*phi) * M_PI)/180;
@@ -299,37 +301,34 @@ pii is_out(long double sin_H,long double fi){
     }
     return pii(re,cont);
 }
-int solve(long double phi, long double lam){
+long double solve(long double phi, long double lam){
     pii tmp[400][15] = {};
-    for(int i = 0 ; i <= 365 ; i++){
+    for(int i = 1 ; i <= 365 ; i++){
         for(int q = -75 ; q <= 75 ; q += 15){
             pair<long double, long double > location;
             location = get_location(i,phi,lam,q);
-            tmp[i][q] = is_out(location.F,location.S);
+            tmp[i][(q+75)/15] = is_out(location.F,location.S);
 
         }
     }
-//    ans[B] += IBR * tmp.F;
-//    ans[B] -= IrBR * tmp.F;
-//    ans[B] += IsBR * (tmp.S - tmp.F);
-    int l = 0,r = 90,l2,r2,re;
-    long double ans = 0;
-    while(r - l > 0){
-        l2 = l + (r - l) / 3;r2 = l + (r - l) / 3 * 2;
-        long double IBR_l2,IBR_r2;
-        for(int i = 0 ; i <= 365 ; i++){
+    long double l = 0,r = 90,l2,r2,re;
+    while(r - l >=0.001){
+        l2 = l + (r - l) / 3;r2 = r - (r - l) / 3;
+        long double IBR_l2 = 0,IBR_r2 = 0;
+        for(int i = 1 ; i <= 365 ; i++){
             for(int q = -75 ; q <= 75 ; q += 15){
                 long double IrBR,IsBR,sin_H,fi;
                 long double IBR = get_IBR(i,0,(l2) * M_PI /180,phi,lam,q,&sin_H,&fi,&IsBR,&IrBR);
-                IBR_l2 += IBR * tmp[i][q].F;
-                IBR_l2 -= IrBR * tmp[i][q].F;
-                IBR_l2 += IsBR * (tmp[i][q].S - tmp[i][q].F);
+                IBR_l2 += IBR * tmp[i][(q+75)/15].F;
+//                IBR_l2 -= IrBR * tmp[i][(q+75)/15].F;
+                IBR_l2 += IsBR * (tmp[i][(q+75)/15].S - tmp[i][(q+75)/15].F);
                 IBR = get_IBR(i,0,(r2) * M_PI /180,phi,lam,q,&sin_H,&fi,&IsBR,&IrBR);
-                IBR_r2 += IBR * tmp[i][q].F;
-                IBR_r2 -= IrBR * tmp[i][q].F;
-                IBR_r2 += IsBR * (tmp[i][q].S - tmp[i][q].F);
+                IBR_r2 += IBR * tmp[i][(q+75)/15].F;
+//                IBR_r2 -= IrBR * tmp[i][(q+75)/15].F;
+                IBR_r2 += IsBR * (tmp[i][(q+75)/15].S - tmp[i][(q+75)/15].F);
             }
         }
+//        cout << l << ' ' << l2 << ' ' << r2 << ' '<< r << ' ' << IBR_l2 << ' ' << IBR_r2 << endl;
         if(IBR_l2 > IBR_r2){
             r = r2;
         }else{
@@ -337,7 +336,35 @@ int solve(long double phi, long double lam){
         }
     }
     return l;
+}
+void solve2(long double phi, long double lam,long double ans[]){
+    pii tmp[400][15] = {};
+    for(int i = 1 ; i <= 365 ; i++){
+        for(int q = -75 ; q <= 75 ; q += 15){
+            pair<long double, long double > location;
+            location = get_location(i,phi,lam,q);
+            tmp[i][(q+75)/15] = is_out(location.F,location.S);
+//            cout << i << ' ' << (q+75)/15 << ' ' << tmp[i][(q+75)/15].F << ' ' << tmp[i][(q+75)/15].S << endl;
 
+        }
+    }
+    for(int i = 0 ; i <= 90 ; i ++){
+        for(int q = 1 ; q <= 365 ; q++){
+            for(int k = -75 ; k <= 75 ; k += 15){
+                long double IrBR,IsBR,sin_H,fi;
+                long double IBR = get_IBR(q,0,(i) * M_PI /180,phi,lam,k,&sin_H,&fi,&IsBR,&IrBR);
+                ans[i] += IBR * tmp[q][(k+75)/15].F;
+//                ans[i] -= IrBR * tmp[q][(k+75)/15].F;
+                ans[i] += IsBR * (tmp[q][(k+75)/15].S - tmp[q][(k+75)/15].F);
+//                cout << i << ' ' << k << ' ' << ans[i] << ' ' << IBR << ' ' << IrBR << ' ' << IsBR << endl;
+//                cout <<IsBR << ' ' << IrBR << ' ' << IBR << endl;
+            }
+        }
+    }
+    for(int i = 0 ; i < 90 ; i++){
+        cout << ans[i] << ' ' ;
+    }
+    return;
 }
 void output(long double ans[95]){
     fstream file;
@@ -351,10 +378,17 @@ void output(long double ans[95]){
 int main(){
     IOS
 //    special_point();
-    long double phi,lam = -5;
-    if(!init(&phi,&lam))return 0;
-    cout << solve(phi,lam) << endl;
-//    output(ans);
+    int type;
+    long double phi,lam = -5,ans[95] = {};
+    if(!init(&phi,&lam,&type))return 0;
+    if(type == 1){
+        cout << solve(phi,lam) << endl;
+    }else if(type == 2){
+        solve2(phi,lam,ans);
+        output(ans);
+    }else{
+        cout << "no this type";
+    }
     system("pause");
     return 0;
 }
