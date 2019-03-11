@@ -57,7 +57,7 @@ struct cycle{
 };
 long double all = 0;
 int n;
-int s[10005][10005]={};
+float s[10005][10005]={};
 pii ra,rb;
 bool is_solar[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
@@ -325,9 +325,9 @@ pii is_out(long double sin_H,long double fi){
 void solve(long double phi, long double lam,long double ans[]){
     int N[5] = {113,174,267,357};
     for(int R = 0; R <= 0; R++){
-        for(int B = 0; B <= 90; B++){
-            for(int q = 1; q <= 365; q++){
-                for(int i = -75; i <= 75; i += 15){
+        for(int B = 7; B <= 7; B++){
+            for(int q = 267; q <= 267; q++){
+                for(float i = -75; i <= 75; i += 7.5){
                     long double sin_H,fi,IsBR,IrBR;
 //                    cout << "debug3:" << N[q] << ' ' << R << ' ' << B << ' ' << i << endl;
                     long double IBR = get_IBR(q,((R) * M_PI)/180,((B) * M_PI)/180,phi,lam,i,&sin_H,&fi,&IsBR,&IrBR);
@@ -337,6 +337,7 @@ void solve(long double phi, long double lam,long double ans[]){
 //                    ans[B] -= IrBR * tmp.F;
                     ans[B] += IsBR * (tmp.S - tmp.F);
 //                    system("pause");
+                    cout << i << ' ' << IBR * tmp.F + IsBR * (tmp.S - tmp.F) << ' ' << tmp.F << ' ' << tmp.S << ' ' << asin(sin_H) * 180 / M_PI << endl;
                 }
             }
 //            cout << "debug11:" << ans[B] << endl;
