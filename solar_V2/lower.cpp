@@ -53,7 +53,7 @@ template<typename _t> void pary(_t _a,_t _b){_OUTC(cerr,_a,_b);cerr<<endl;}
 //θ = si
 long double all = 0;
 int n;
-int s[10005][10005]={};
+float s[10005][10005]={};
 pii ra,rb;
 bool is_solar[10005][10005]={};
 inline long double f_sin_fi(double long del,double long sin_om,long double cos_H){
