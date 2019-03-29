@@ -30,13 +30,13 @@ string change(int result){
     return re;
 }
 void restart (Problem problem[],People people[],string *address,int *all_pro,int *all_peo){
-    cout << "½Ð¿é¤J¤ñÁÉ³]©w¤¶­±¦a§}:";
+    cout << "è«‹è¼¸å…¥æ¯”è³½è¨­å®šä»‹é¢åœ°å€:";
     cin >> *address;
     fstream index;
     cout << "./"+*address+"/index.txt"<<endl;
     index.open("./"+*address+"/index.txt",ios::in);
     if(!index){
-        cout << "¿é¤J¿ù»~"<<endl;
+        cout << "è¼¸å…¥éŒ¯èª¤"<<endl;
         restart (problem,people,address,all_pro,all_peo);
     }
     index >> *all_pro;
@@ -92,6 +92,28 @@ bool input (People people[],Problem problem[],People* now_peo,Problem* now_pro,s
     now.open("./"+address+"/stop.txt",ios::in);
     if(now)return false;
     return true;
+}
+int check_password(Problem problem[],People people[],Problem now_pro,People now_peo,string address,int all_pro,int all_peo){
+    fstream file;
+    string key = now_peo.pw;
+    file.open(now_peo.name+"_"+now_pro.name,ios::in);
+    vector<string> ve;
+    char tmp[50] = {};
+    while(file.getline(tmp,sizeof(tmp))){
+        ve.push_back(tmp);
+    }
+    file.close();
+    if(ve.size() == 0 || ve[0] != key){
+        if(ve.size() != 0)cout << ve[0] << endl;
+        return 6;
+    }else{
+        file.open("123.cpp",ios::out);
+        for(int i =  1 ; i < int(ve.size()) ; i++){
+            file << ve[i];
+            file << '\n';
+        }
+    }
+    return 1;
 }
 void solve (Problem problem[],People people[],Problem now_pro,People now_peo,string address,int all_pro,int all_peo){
     int result = 0;
