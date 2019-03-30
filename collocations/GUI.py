@@ -28,7 +28,7 @@ class Ui_Dialog(object):
         self.label.setGeometry(QtCore.QRect(60, 50, 241, 41))
         font = QtGui.QFont()
         font.setFamily("標楷體")
-        font.setPointSize(20)
+        font.setPointSize(30)
         font.setBold(True)
         font.setWeight(75)
         self.label.setFont(font)
@@ -40,7 +40,7 @@ class Ui_Dialog(object):
         self.lineEdit.setGeometry(QtCore.QRect(40, 160, 281, 21))
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(330, 10, 47, 12))
+        self.label_2.setGeometry(QtCore.QRect(300, 10, 80, 12))
         font = QtGui.QFont()
         font.setFamily("Bell MT")
         font.setPointSize(10)
@@ -64,10 +64,10 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle("collocation")
         self.label.setText(_translate("Dialog", "123"))
-        self.label_2.setText(_translate("Dialog", "TextLabel"))
-        self.label_3.setText(_translate("Dialog", "TextLabel"))
+        self.label_2.setText(_translate("Dialog", "TextLabel1"))
+        self.label_3.setText(_translate("Dialog", "TextLabel2"))
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
