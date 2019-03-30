@@ -24,7 +24,6 @@ class Main(QMainWindow, GUI.Ui_GUI):
             eng[i] = eng[i][0:len(eng[i]) - 1]
         return chi, eng
     def start(self):
-        print("ass")
         self.chi, self.eng = self.readtxt()
         self.all_eng = len(self.eng)
         self.now_eng = 0
@@ -68,6 +67,8 @@ class Main(QMainWindow, GUI.Ui_GUI):
         print("下載影音檔案:")
         print("現在進度" + "0" + "%")
         self.label_3.setText("現在進度" + "0" + "%")
+        if not os.path.isdir("./sound"):
+            os.mkdir("./sound")
         os.chdir("./sound")
         sound_list = []
         for i in self.eng:
