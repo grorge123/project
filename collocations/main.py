@@ -18,10 +18,17 @@ class Main(QMainWindow, GUI.Ui_GUI):
         eng = open("eng.txt",'r')
         chi = chi.readlines()
         eng = eng.readlines()
-        for i in range(len(chi) - 1):
-            chi[i] = chi[i][0:len(chi[i]) - 1]
-        for i in range(len(eng) - 1):
-            eng[i] = eng[i][0:len(eng[i]) - 1]
+        for i in eng:
+            if len(i) == 0:
+                del i
+        print(chi[0][0:len(chi[0]) - 1])
+        for i in range(len(chi)):
+            if chi[i][-1] == '\n':
+                chi[i] = chi[i][0:len(chi[i]) - 1]
+        for i in range(len(eng)):
+            if eng[i][-1] == '\n':
+                eng[i] = eng[i][0:len(eng[i]) - 1]
+        
         return chi, eng
     def start(self):
         self.chi, self.eng = self.readtxt()
@@ -93,7 +100,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = Main()
     MainWindow.show()
-    chi,eng = MainWindow.readtxt()
+    #chi,eng = MainWindow.readtxt()
     #MainWindow.start(chi, eng)
     sys.exit(app.exec_())
     

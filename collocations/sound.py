@@ -16,6 +16,7 @@ def download_mp3(source_txt, language):
         #f = open(savePath,'wb')
         #f.write(response.read())
         #f.close()
+        print(savePath)
         tts = gTTS(text = source_txt, lang=language)
         tts.save(savePath)
         return savePath
