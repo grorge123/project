@@ -39,7 +39,7 @@ if __name__ == '__main__':
     check_down(eng)
     while(len(chi) != 0):
         ra = random.randint(0, len(chi) - 1)
-        print(chi[ra] + ' ' + str(eng[ra].count(' ') + 1) + ' ' +str(len(chi) +1))
+        print(chi[ra] + ' ' + str(eng[ra].count(' ') + 1) + ' ' +str(len(chi)))
         inp = input()
         if(inp == eng[ra]):
             print("YES")
