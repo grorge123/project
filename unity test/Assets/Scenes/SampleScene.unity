@@ -379,7 +379,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 22, y: 3}
+  m_Size: {x: 30.2, y: 3}
   m_EdgeRadius: 0
 --- !u!4 &713487527
 Transform:
@@ -407,6 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306e9a0c5caec149b439363806934a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  t: {fileID: 0}
 --- !u!1 &727890313
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,7 +423,7 @@ GameObject:
   - component: {fileID: 727890315}
   m_Layer: 9
   m_Name: people
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -542,7 +543,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727890313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.24, y: -1.83, z: 0}
+  m_LocalPosition: {x: -6.24, y: -1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -748,7 +749,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 10}
+  m_Size: {x: 3, y: 14.91}
   m_EdgeRadius: 0
 --- !u!4 &1745703809
 Transform:
@@ -762,7 +763,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1745703810
 MonoBehaviour:
@@ -776,6 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306e9a0c5caec149b439363806934a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  t: {fileID: 0}
 --- !u!1 &1982836913
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,7 +820,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 22, y: 3}
+  m_Size: {x: 29.8, y: 3}
   m_EdgeRadius: 0
 --- !u!4 &1982836915
 Transform:
@@ -832,7 +834,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1982836916
 MonoBehaviour:
@@ -846,6 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306e9a0c5caec149b439363806934a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  t: {fileID: 0}
 --- !u!1 &2147257046
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +862,7 @@ GameObject:
   - component: {fileID: 2147257049}
   m_Layer: 0
   m_Name: Lside
-  m_TagString: Bullet
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -888,7 +891,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 10}
+  m_Size: {x: 3, y: 16.4}
   m_EdgeRadius: 0
 --- !u!4 &2147257048
 Transform:
@@ -916,3 +919,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306e9a0c5caec149b439363806934a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  t: {fileID: 2661183617410504858, guid: de8d85ffe57af9844bd41c94eb7f1c4a, type: 3}

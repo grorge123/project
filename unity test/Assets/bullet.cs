@@ -24,6 +24,8 @@ public class bullet : MonoBehaviour
     void Update()
     {
         gameObject.transform.position += direction;
-
+		if(gameObject.transform.position.x>15){
+			Destroy(gameObject);
+		}
     }
 }
