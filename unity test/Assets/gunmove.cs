@@ -5,7 +5,7 @@ using UnityEngine;
 public class gunmove : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject Obj;
+    //public GameObject Obj;
     public GameObject Bullet;
     void Start()
     {
@@ -24,7 +24,10 @@ public class gunmove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             print("fire");
-            Instantiate(Bullet, gameObject.transform.position, Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan + 90));
+            Vector3 pos = gameObject.transform.position;
+            pos.x += 2;
+            print(tan);
+            Instantiate(Bullet, pos, Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan ));
         }
     }
 }

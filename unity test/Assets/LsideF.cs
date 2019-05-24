@@ -5,7 +5,7 @@ using UnityEngine;
 public class LsideF : MonoBehaviour
 {
     // Start is called before the first frame update
-	public GameObject t;
+	
 	void Start()
     {
         
@@ -19,7 +19,9 @@ public class LsideF : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
 		if(col.tag == "Bullet")
-            
+        {
+            print("ss");
             Destroy(col.gameObject);
+        }
     }
 }
