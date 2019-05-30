@@ -7,9 +7,10 @@ public class gunmove : MonoBehaviour
     // Start is called before the first frame update
     //public GameObject Obj;
     public GameObject Bullet;
+    private Camera camera;
     void Start()
     {
-        
+        camera = Camera.main;
     }
     // Update is called once per frame
     void Update()
@@ -22,15 +23,21 @@ public class gunmove : MonoBehaviour
         tan = Mathf.Atan(tan) * 180 / PI;
         //gameObject.transform.rotation =  Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan);
         float angleZ = Mathf.Atan2(Input.mousePosition.y, Input.mousePosition.x) * Mathf.Rad2Deg;
-        gameObject.transform.eulerAngles = new Vector3(0, 0, angleZ);
-        Vector2 mpos = RectTransformUtility.WorldToScreenPoint(Camera.main, Input.mousePosition);
-        if (Input.GetKeyDown(KeyCode.Space))
+        Vector3 mpos = camera.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            print("fire");
             Vector3 pos = gameObject.transform.position;
+            
             pos.x += 2;
-            print(string.Format("{0} {1}", mpos.x, mpos.y));
-            Instantiate(Bullet, pos, Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan ));
+            print(string.Format("{0} {1} {2} {3}", mpos.x, mpos.y, pos.x, pos.y));
+            Vector3 direction;
+            direction = (mpos - pos);
+            direction.Normalize();
+            direction /= 10.0f;
+            direction *= 5.0f;
+            GameObject new_bullet = Instantiate(Bullet, pos, Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan ));
+            new_bullet.GetComponent<bullet>().direction = direction;
         }
     }
 }

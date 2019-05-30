@@ -20,7 +20,6 @@ public class LsideF : MonoBehaviour
     {
 		if(col.tag == "Bullet")
         {
-            print("ss");
             Destroy(col.gameObject);
         }
     }
