@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using tool;
 
 public class gunmove : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class gunmove : MonoBehaviour
     private Camera camera;
     void Start()
     {
-              
+        int testtool = tool.Program.Test2(5);
         camera = Camera.main;
     }
     // Update is called once per frame

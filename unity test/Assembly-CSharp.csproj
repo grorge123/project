@@ -58,18 +58,7 @@
      <Compile Include="Assets\control.cs" />
      <Compile Include="Assets\gunmove.cs" />
      <Compile Include="Assets\LsideF.cs" />
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Analytics.DataPrivacy">
- <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\tool.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -79,11 +68,17 @@
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.TextMeshPro.Editor">
+ <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.CollabProxy.Editor">
+ <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
  <Reference Include="com.unity.multiplayer-weaver.Editor">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
@@ -108,6 +103,12 @@
  </Reference>
  <Reference Include="Unity.VisualStudio.Editor">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Analytics.DataPrivacy">
+ <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
