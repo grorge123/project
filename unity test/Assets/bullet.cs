@@ -12,7 +12,7 @@ public class bullet : MonoBehaviour
         const float PI = 3.14159265359F;
         //float tan = (gameObject.transform.position.y - Input.mousePosition.y) / (gameObject.transform.position.x - Input.mousePosition.x);
         float tan = (direction.y / direction.x);
-        print(string.Format("tan:{0} {1} {2} {3}",tan, Mathf.Atan(tan) * 180 / PI,direction.x, direction.y));
+        //print(string.Format("tan:{0} {1} {2} {3}",tan, Mathf.Atan(tan) * 180 / PI,direction.x, direction.y));
         tan = Mathf.Atan(tan) * 180 / PI;
         gameObject.transform.rotation = Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan + 0);
         //direction = (Input.mousePosition - gameObject.transform.position);

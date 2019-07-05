@@ -26,6 +26,7 @@ public class badcontrol : MonoBehaviour
         {
             GameObject bullet = Instantiate(Bullet, gameObject.transform.position, gameObject.transform.rotation);
             Vector3 direction;
+            direction.z = 0;
             Vector3 people_position = control.people_position;
             direction = (people_position - gameObject.transform.position);
             direction.Normalize();

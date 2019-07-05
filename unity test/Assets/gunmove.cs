@@ -12,7 +12,6 @@ public class gunmove : MonoBehaviour
     private Camera camera;
     void Start()
     {
-        int testtool = tool.Program.Test2(5);
         camera = Camera.main;
     }
     // Update is called once per frame
@@ -33,10 +32,11 @@ public class gunmove : MonoBehaviour
             Vector3 pos = gameObject.transform.position;
             
             pos.x += 2;
-            print(string.Format("{0} {1} {2} {3}", mpos.x, mpos.y, pos.x, pos.y));
             Vector3 direction;
             direction = (mpos - pos);
+            direction.z = 0;
             direction.Normalize();
+            //print(direction);
             direction /= 10.0f;
             direction *= 5.0f;
             GameObject new_bullet = Instantiate(Bullet, pos, Quaternion.Euler(gameObject.transform.rotation.x, gameObject.transform.rotation.y, tan ));

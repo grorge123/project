@@ -55,6 +55,7 @@
   <ItemGroup>
      <Compile Include="Assets\badcontrol.cs" />
      <Compile Include="Assets\bullet.cs" />
+     <Compile Include="Assets\conter.cs" />
      <Compile Include="Assets\control.cs" />
      <Compile Include="Assets\gunmove.cs" />
      <Compile Include="Assets\LsideF.cs" />
