@@ -59,6 +59,7 @@
      <Compile Include="Assets\control.cs" />
      <Compile Include="Assets\gunmove.cs" />
      <Compile Include="Assets\LsideF.cs" />
+     <Compile Include="Assets\testAI.cs" />
      <Compile Include="Assets\tool.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Desktop/GITHUB/project/unity test/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

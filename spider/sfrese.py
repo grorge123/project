@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
 
-#%%
+# In[1]:
+
+
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -7,16 +11,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
-import os
 
 
-#%%
-fi = []
-cookie = []
-if(os.path.isfile('cookies.txt')):
-    fi = open('cookies.txt', 'r+')
-    cookie = fi.read()
-    fi.close()
+# In[2]:
+
+
+fi = open('cookies.txt', 'r+')
+cookie = fi.read()
 cookies = {}
 log = open('log.txt', 'a')
 url = 'https://passport.sfacg.com/'
@@ -42,32 +43,44 @@ headers2 = {
     'M-Requested-With' : 'XMLHttpRequest'
 }
 headers2['cookie'] = cookie
+fi.close()
 
 
-#%%
-success = 0
+# In[3]:
+
+
 se = requests.session()
 # r.encoding = r.apparent_encoding
-try:
-    r = se.get(url, headers = headers2)
-except:
-    success = -1
+r = se.get(url, headers = headers2)
 log.write(time.asctime( time.localtime(time.time()) ) + '\n')
 
 
-#%%
-if not success == -1 and r.text.count('200'):
+# In[6]:
+
+
+if r.text.count('200'):
     print('登入成功')
     log.write('登入成功')
-if not success == -1 and r.text.count('您今天已经签过到了,请明天再来'):
+if r.text.count('您今天已经签过到了,请明天再来'):
     print('您今天已经签过到了,请明天再来')
     log.write('您今天已經簽到過了')
 
-#%%
-if success == -1 or r.text.count('需要登录才能执行该操作'):
+
+# In[4]:
+
+
+browser = webdriver.Firefox()
+browser.get('https://www.facebook.com/v2.8/dialog/oauth?client_id=314584345382224&response_type=code&redirect_uri=https://proxypassport.sfacg.com/oauth/facebook/authsuccess-1.ashx&state=sf&scope=email')
+
+
+# In[5]:
+
+
+if r.text.count('需要登录才能执行该操作'):
     browser = webdriver.Firefox()
     em = 'g12332196@yahoo.com'
     pa = '987890123'
+    success = 0
     try:
         #browser.get('https://passport.sfacg.com/Login.aspx')
         browser.get('https://www.facebook.com/v2.8/dialog/oauth?client_id=314584345382224&response_type=code&redirect_uri=https://proxypassport.sfacg.com/oauth/facebook/authsuccess-1.ashx&state=sf&scope=email')
@@ -108,7 +121,7 @@ if success == -1 or r.text.count('需要登录才能执行该操作'):
             success = 0
         cookies = browser.get_cookies()
     finally:
-        browser.close()
+        browser
     print(cookies)
     fi = open('cookies.txt', 'w')
     cookie = ''
@@ -122,9 +135,11 @@ if success == -1 or r.text.count('需要登录才能执行该操作'):
     print(cookie)
     fi.close()
     log.write('cookies失效,已用selinum登入')
-log.close()
+    log.close()
+
+
+# In[ ]:
 
 
 
 
-#%%
