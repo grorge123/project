@@ -11,14 +11,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
+import os
 
 
 # In[2]:
 
 
-fi = open('cookies.txt', 'r+')
-cookie = fi.read()
-cookies = {}
+cookie = ''
+if(os.path.exists('cookies.txt')):
+    fi = open('cookies.txt', 'r+')
+    cookie = fi.read()
+    fi.close()
 log = open('log.txt', 'a')
 url = 'https://passport.sfacg.com/'
 url = 'http://book.sfacg.com/ajax/ashx/Common.ashx?op=signinNew&nid=0&_=' #登入介面
@@ -43,7 +46,7 @@ headers2 = {
     'M-Requested-With' : 'XMLHttpRequest'
 }
 headers2['cookie'] = cookie
-fi.close()
+
 
 
 # In[3]:
@@ -60,28 +63,16 @@ log.write(time.asctime( time.localtime(time.time()) ) + '\n')
 
 if r.text.count('200'):
     print('登入成功')
-    log.write('登入成功')
+    log.write('登入成功\n')
 if r.text.count('您今天已经签过到了,请明天再来'):
     print('您今天已经签过到了,请明天再来')
-    log.write('您今天已經簽到過了')
-
-
-# In[4]:
-
-
-browser = webdriver.Firefox()
-browser.get('https://www.facebook.com/v2.8/dialog/oauth?client_id=314584345382224&response_type=code&redirect_uri=https://proxypassport.sfacg.com/oauth/facebook/authsuccess-1.ashx&state=sf&scope=email')
-
-
-# In[5]:
-
-
+    log.write('您今天已經簽到過了\n')
 if r.text.count('需要登录才能执行该操作'):
-    browser = webdriver.Firefox()
-    em = 'g12332196@yahoo.com'
-    pa = '987890123'
+    em = ''
+    pa = ''
     success = 0
     try:
+        browser = webdriver.Firefox()
         #browser.get('https://passport.sfacg.com/Login.aspx')
         browser.get('https://www.facebook.com/v2.8/dialog/oauth?client_id=314584345382224&response_type=code&redirect_uri=https://proxypassport.sfacg.com/oauth/facebook/authsuccess-1.ashx&state=sf&scope=email')
         login_em = browser.find_element_by_id('email')
@@ -121,7 +112,7 @@ if r.text.count('需要登录才能执行该操作'):
             success = 0
         cookies = browser.get_cookies()
     finally:
-        browser
+        browser.close()
     print(cookies)
     fi = open('cookies.txt', 'w')
     cookie = ''
@@ -134,7 +125,7 @@ if r.text.count('需要登录才能执行该操作'):
     fi.write(cookie)
     print(cookie)
     fi.close()
-    log.write('cookies失效,已用selinum登入')
+    log.write('cookies失效,已用selinum登入\n')
     log.close()
 
 
