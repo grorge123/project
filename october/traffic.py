@@ -2,12 +2,24 @@ import pandas as pd
 import os
 import functools
 import math
+import requests
+import json
 
 def scmp(a):
     return int(a[1])
 
 dic = {}
 os.chdir('traffic')
+
+def get_addr(addr, api_key):
+    url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + api_key + "&address=" + addr
+    re = requests.get(url)
+    js = json.loads(re.text)
+    location = {}
+    for key, values in js['results'][0]['geometry']['location'].items():
+        location[key] = values
+        print(key, values)
+    return location
 
 for i in range(101,106):
     df = pd.read_csv(str(i)+'.csv')
@@ -58,4 +70,5 @@ for i in range(len(sort_list)):
 print(len(dic))
 with open('save.csv','w') as fi:
     for key, values in dic.items():
-        fi.write(key+','+str(values)+'\n')
+        location = get_addr(key, 'AIzaSyBy3DZKBd5yAyIefybiwBcvAcOqtDN6Wyc')
+        fi.write(key+','+str(values) +','+ str(location['lat']) + ',' + str(location['lng']) + '\n')
