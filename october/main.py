@@ -10,7 +10,7 @@ import os
 import numpy as np
 #https://rent.591.com.tw/rent-detail-8045820.html
 browser = webdriver.Firefox()
-api_key = 'AIzaSyBy3DZKBd5yAyIefybiwBcvAcOqtDN6Wyc'
+api_key = ''
 worked = []
 
 
