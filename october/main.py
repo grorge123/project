@@ -9,8 +9,8 @@ import pandas as pd
 import os
 import numpy as np
 #https://rent.591.com.tw/rent-detail-8045820.html
-browser = webdriver.Firefox()
-api_key = ''
+browser = webdriver.Chrome(executable_path=r'./chromedriver.exe')
+api_key = 'AIzaSyAmCyhCTykSj25pZ0lDZ5RRjbVxW6tEsPs'
 worked = []
 
 
@@ -93,7 +93,6 @@ def get_trash_car(location):
     MIN = 1000000000
     add = ''
     for i in range(len(lis)):
-        print(haversine(location['lng'], location['lat'], lis[i][1], lis[i][2]), MIN)
         if haversine(location['lng'], location['lat'], lis[i][1], lis[i][2]) < MIN:
             MIN = haversine(location['lng'], location['lat'], lis[i][1], lis[i][2])
             add = lis[i][0]
