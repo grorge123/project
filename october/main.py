@@ -6,9 +6,28 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
+import requests
+import json
 
 browser = webdriver.Firefox()
+api_key = ''
 worked = []
+
+def get_addr(addr, api_key):
+    url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + api_key + "&address=" + addr
+    re = requests.get(url)
+    js = json.loads(re.text)
+    location = {}
+    for key, values in js['results'][0]['geometry']['location'].items():
+        location[key] = values
+        print(key, values)
+    return location
+
+def have_building(location, typ, api_key):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + str(location['lat']) + ',' + str(location['lng']) + "&radius=100&types=" + typ + "&key="+api_key
+    re = requests.get(url)
+    return len(js['results']), re
+
 while True:
     for current_window in browser.window_handles:
         if worked.count(current_window):
@@ -27,4 +46,5 @@ while True:
                 continue
             addr = element.text
             print(element.text)
+            
 #%%

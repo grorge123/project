@@ -56,3 +56,6 @@ for i in range(len(sort_list)):
     else:
         break
 print(len(dic))
+with open('save.csv','w') as fi:
+    for key, values in dic.items():
+        fi.write(key+','+str(values)+'\n')
