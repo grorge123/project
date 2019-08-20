@@ -1,5 +1,6 @@
 
 #%%
+# coding= utf-8
 from selenium import webdriver
 from math import radians, cos, sin, asin, sqrt
 import time
@@ -103,7 +104,7 @@ def write_info(info, addr):
     os.chdir('main/data')
     if len(info) == 0:
         info.append("無特殊資訊")
-    with open(addr+'.txt','w') as fi:
+    with open(addr+'.txt','w', encoding='UTF-8') as fi:
         for i in info:
             fi.write(i)
     os.chdir(path)
