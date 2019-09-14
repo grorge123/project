@@ -11,7 +11,7 @@ import os
 import numpy as np
 #https://rent.591.com.tw/rent-detail-8045820.html
 browser = webdriver.Chrome(executable_path=r'./chromedriver.exe')
-api_key = 'AIzaSyAmCyhCTykSj25pZ0lDZ5RRjbVxW6tEsPs'
+api_key = 'AIzaSyDVnvHyXuZtfk82RzI4UjLASu9GeCvc324'
 worked = []
 
 
@@ -99,6 +99,18 @@ def get_trash_car(location):
             add = lis[i][0]
     return add, MIN
 
+def have_temple(location):
+    path = os.getcwd()
+    os.chdir('trash_car')
+    df = pd.read_csv('save2.csv')
+    os.chdir(path)
+    lis = list(df[['縣市', '經度', '緯度']].values.tolist())
+    for i in range(len(lis)):
+        if haversine(location['lng'], location['lat'], lis[i][1], lis[i][2]) < 100:
+            print('temple:{}'.format(lis[0]))
+            return True, lis[0]
+    return False, ''
+
 def write_info(info, addr):
     path = os.getcwd()
     os.chdir('main/data')
@@ -134,17 +146,20 @@ while True:
                 info.append('此地點附近有高交通事故路段!!!<br>')
             trash_add, trash_dis = get_trash_car(location)
             info.append('最近倒垃圾位置為:{} 距離:{} m<br>'.format(trash_add, int(trash_dis)))
+            build, name = have_temple(location)
+            if build:
+                info.append('此地點附近有廟宇 地點為:{}<br>'.format(name[0]))
             build, name = have_building(location, 'cemetery', api_key)
             if build != 0:
                 info.append('此地點附近有殯儀館/墓地 名稱為{}<br>'.format(name))
             build, name = have_building(location, 'night_club', api_key)
             if build != 0:
-                info.append('此地點附近有夜店 名稱為{}<br>'.format(name))
+                info.append('此地點附近有夜店 名稱為:{}<br>'.format(name))
             build, name = have_building(location, 'gas_station', api_key)
             if build != 0:
-                info.append('此地點附近有加油站 名稱為{}<br>'.format(name))
-            build, name = have_building(location, 'gas_station', api_key)
+                info.append('此地點附近有加油站 名稱為:{}<br>'.format(name))
+            build, name = have_building(location, 'bar', api_key)
             if build != 0:
-                info.append('此地點附近有酒吧 名稱為{}<br>'.format(name))
+                info.append('此地點附近有酒吧 名稱為:{}<br>'.format(name))
             write_info(info, addr)
 #%%
