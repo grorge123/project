@@ -1,0 +1,36 @@
+<html>
+<head>
+<link rel="stylesheet" href="css/float.css" type="text/css" media="all" />
+</head>
+<body>
+mixin model
+  section&attributes(attributes)= name
+    .float-btn-group
+      button.btn-float.btn-triger.pink
+        i.icon-bars
+      .btn-list
+        a.btn-float.yellow(href="#")
+          i.fa.fa-search
+        a.btn-float.blue(href="#")
+          i.fa.fa-cloud-download  
+        a.btn-float.green(href="#")
+          i.fa.fa-paperclip    
+        a.btn-float.purple(href="#")
+          i.fa.fa-line-chart 
+  
+
+          
+        
+          
+      
+      
+- var x  =1
+- for (var x = 0; x < 7; x++)
+  +model(class="model-"+x)
+ <!--javascript-->
+ $('.btn-triger').click(function(){
+  $(this).closest('.float-btn-group').toggleClass('open');
+});
+
+</body>
+</html>
