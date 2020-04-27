@@ -1,3 +1,13 @@
-#B ul li {
+div.coldiv {
     display: inline;
+}
+
+.columnDIV {
+    width: 240px;
+    height: 300px;
+    line-height: 50px;
+    padding: 20px;
+    border: 2px blue solid;
+    margin-right: 10px;
+    float: left;
 }
