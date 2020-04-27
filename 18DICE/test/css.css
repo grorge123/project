@@ -3,11 +3,11 @@ div.coldiv {
 }
 
 .columnDIV {
-    width: 240px;
-    height: 300px;
-    line-height: 50px;
-    padding: 20px;
+    width: 40%;
+    height: 400px;
+    line-height: 40px;
+    padding: 40px;
     border: 2px blue solid;
-    margin-right: 10px;
+    margin-right: 10%;
     float: left;
 }
