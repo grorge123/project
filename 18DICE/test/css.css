@@ -3,11 +3,27 @@ div.coldiv {
 }
 
 .columnDIV {
-    width: 40%;
+    position: relative;
+    left: 16%;
+    width: 400px;
     height: 400px;
     line-height: 40px;
     padding: 40px;
     border: 2px blue solid;
-    margin-right: 10%;
+    margin-right: 20%;
     float: left;
+    opacity: 0.6;
+    background: none;
+}
+
+.src {
+    margin-left: 78px;
+    width: 160px;
+    height: 160px;
+    margin-bottom: 40px;
+}
+
+._text {
+    font-size: 40px;
+    color: rgb(0, 0, 0);
 }
