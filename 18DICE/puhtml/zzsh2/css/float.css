@@ -1,0 +1,347 @@
+@import "compass/css3";
+*, *:after, *:before{
+  @include box-sizing(border-box);
+}
+
+body{
+  margin: 0;
+}
+section{
+  background: #eceff1;
+  width: 100%;
+  padding:50px;
+  min-height: 200px;
+}
+
+//===============
+
+.btn-float{
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+  border:none;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  @include transition(.3s);
+  @include border-radius(50%);
+  cursor: pointer;
+  @include box-shadow(0 2px 5px 0 rgba(0, 0, 0, 0.11));
+  &:hover{
+    text-decoration: none;
+    @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.13));
+  }
+  &:active, &:focus{outline: none;}
+  
+  &+&{
+    margin-left: 5px;
+  }
+}
+.yellow{ background: #ffa000}
+.blue{ background: #40c4ff}
+.green{ background: #00e676}
+.purple{ background: #8e24aa}
+.pink{ background: #e91e63}
+
+.icon-bars{
+  background: #fff;
+  height: 1px;
+  width: 22px;
+  margin: auto;
+  display: block;
+  position: relative;
+  @include transition(.3s .3s);
+  &:after{
+    content: '';
+    position: absolute;
+    height: 22px;
+    width: 1px;
+    background: #fff;
+    top: -10px;
+  }
+}
+
+.float-btn-group{
+  position: relative;
+  float: right;
+  @include transition(.3s);
+
+  .btn-triger{
+    z-index: 15;
+    float: left;
+  }
+  .btn-list{
+    position: absolute;
+    right: 0;
+    @include transition(.3s);
+    li{
+     display: inline-block;
+    }
+    
+  }
+  
+  &.open{
+    .icon-bars{@include rotate(45deg)}
+  }
+}
+
+//===================================
+
+.model-0{
+  .float-btn-group{
+      width: 65px;
+      padding-left: 15px;
+      min-height: 65px;
+      overflow: hidden;
+    .btn-list{
+      opacity: 0;
+      width: 215px;
+    }
+    
+    &.open{
+       width: 285px;
+        .btn-list{ opacity: 1}
+    }
+  }
+}
+
+.model-1{
+  background: #cfd8dc ;
+  .float-btn-group{
+    margin: auto;
+    float:none;
+    width: 50px;
+    .icon-bars{@include transition(.3s)}
+    .btn-list{
+      background: rgba(0,0,0,.2);
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      @include transition(.3s .3s);
+      @include border-radius(50%);
+      .btn-float{
+        position: absolute;
+        background: none;
+        @include box-shadow(none);
+        @include scale(0);
+        margin: auto;
+        &:nth-child(1){left:0; right: 0; top: 10px;}
+        &:nth-child(2){left:10px; top:0; bottom:0;}
+        &:nth-child(3){left:0; right: 0; bottom: 10px;}
+        &:nth-child(4){right: 10px; top:0; bottom:0;}
+      }
+    }
+    
+    &.open{
+      .btn-list{
+        width: 200px;
+        height: 200px;
+        left: -75px;
+        top: -75px;
+        opacity: 1;
+        .btn-float{
+          @include scale(1.1);
+          @include transition(.3s .6s);
+           &:hover{
+            @include transition(.3s);
+            @include text-shadow(1px 4px 1px #666);
+          }
+        }
+      }
+    }
+  }
+}
+
+.model-2{
+  background: #b0bec5;
+  .float-btn-group{
+    float: left;
+    .icon-bars{@include transition(.3s)}
+    .btn-list{
+      .btn-float{
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        @include scale(0);
+        &:nth-child(1){@include transition(.2s .3s)}
+        &:nth-child(2){@include transition(.2s .5s)}
+        &:nth-child(3){@include transition(.2s .7s)}
+        &:nth-child(4){@include transition(.2s .92s)}   
+      }
+    }
+    
+    &.open{
+      .btn-list{
+        .btn-float{
+          opacity: 1;
+          @include scale(.9);
+          &:nth-child(1){top:-220px;   @include transition(.2s .9s)}
+          &:nth-child(2){top:-165px;   @include transition(.2s .7s)}
+          &:nth-child(3){top:-110px;   @include transition(.2s .5s)}
+          &:nth-child(4){top:-55px;   @include transition(.2s .3s)}   
+        }
+      }
+    }
+  }
+}
+.model-3{
+  background: #90a4ae;
+  .float-btn-group{
+    float:none;
+    width: 50px;
+    margin: auto;
+    .icon-bars{@include transition(.3s)}
+    .btn-list{
+      background: #fff;
+      @include border-radius(50px);
+      width: 50px;
+      height: 50px;
+      left: 0;
+      overflow: hidden;
+      opacity: 0;
+      .btn-float{
+        @include transition(.2s);
+        position: absolute;
+        top: 0;
+        left: 0;
+         @include scale(0);
+          &:nth-child(2){left: 50px;}
+          &:nth-child(3){left: 160px;}
+          &:nth-child(4){left: 215px;}   
+      }
+    }
+    
+    &.open{
+      .btn-list{
+        width: 270px;
+        left: -110px;
+        opacity: 1;
+        .btn-float{
+        @include transition(.2s .3s);
+         @include scale(.9);
+        }
+      }
+    }
+  }
+}
+.model-4{
+  background: #78909c;
+  .float-btn-group{
+    .icon-bars{@include transition(.3s)}
+    .btn-list{
+      .btn-float{
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        &:nth-child(1){@include transition(.3s 1.2s)}
+        &:nth-child(2){@include transition(.3s .9s)}
+        &:nth-child(3){@include transition(.3s .6s)}
+        &:nth-child(4){@include transition(.3s .3s)}   
+      }
+    }
+    
+    &.open{
+      .btn-list{
+        .btn-float{
+          opacity: 1;
+          &:nth-child(1){right:230px; @include transition(.3s .3s)}
+          &:nth-child(2){right:165px; @include transition(.3s .6s)}
+          &:nth-child(3){right:110px; @include transition(.3s .9s)}
+          &:nth-child(4){right:55px; @include transition(.3s 1.2s)}   
+        }
+      }
+    }
+  }
+}
+
+.model-5{
+  background: #607d8b;
+  .float-btn-group{
+    float:none;
+    width: 50px;
+    margin: auto;
+    .icon-bars{@include transition(.4s)}
+    .btn-list{
+      @include border-radius(50px);
+      @include rotate(360deg);
+      @include transition( transform .4s , width .3s .5s , opacity .3s .1s, left .3s .5s);
+      width: 50px;
+      height: 50px;
+      left: 0;
+      overflow: hidden;
+      opacity: 0;
+      .btn-float{
+        @include transition(.2s);
+        position: absolute;
+        top: 0;
+        left: 0;
+         @include scale(1.5);
+          &:nth-child(2){left: 50px;}
+          &:nth-child(3){left: 160px;}
+          &:nth-child(4){left: 215px;}   
+      }
+    }
+    
+    &.open{
+      .icon-bars{@include rotate(-225deg)}
+      .btn-list{
+        @include transition( transform .4s .1s, opacity .3s .1s);
+        @include rotate(0);
+        width: 270px;
+        left: -110px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.model-6{
+  background: #546e7a;
+  .float-btn-group{
+    float: none;
+    margin: auto;
+    width: 50px;
+    .icon-bars{@include transition(.3s 1.3s)}
+    .btn-list{
+      width: 50px;
+      height: 50px;
+      left: 0;
+      top: 0;
+      .btn-float{
+        position: absolute;
+        @include scale(0);
+        left: 0;
+        top: 0;
+        margin: auto;
+        &:nth-child(1){@include transition(.3s .3s);}
+        &:nth-child(2){@include transition(.3s .6s);}
+        &:nth-child(3){@include transition(.3s .9s);}
+        &:nth-child(4){@include transition(.3s 1.2s);}
+      }
+    }
+    
+    &.open{
+      .icon-bars{@include transition(.3s)}
+      .btn-list{
+        .btn-float{
+          @include scale(.9);
+            &:nth-child(1){left:-75px; top:0px;}
+            &:nth-child(2){left:-40px; top:-65px;}
+            &:nth-child(3){left:40px; top:-65px;}
+            &:nth-child(4){left:75px; top:0px;}
+           &:hover{
+            @include transition(.3s);
+            @include text-shadow(1px 4px 1px #666);
+          }
+        }
+      }
+    }
+  }
+}
