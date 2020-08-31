@@ -40,7 +40,6 @@ data = []
 with open(filename, 'r', encoding="utf-8") as f:
     data = f.readlines()
 
-
 now_time = []
 start = -1
 record = []
@@ -53,13 +52,11 @@ for i in range(len(data)):
         if start != -1:
            record.append(change_expense(data[start:i], now_time.copy()))
         start = i 
-
 column = ['編號', '時間', '付款方式', '商店名稱', '花費金錢', '回饋']
 toeng = {'編號':'num', '時間':'timestr', '付款方式':'type', '商店名稱':'store', '花費金錢':'dollar', '回饋':'back'}
 allmoney = 0
 outputname = '計算表.csv'
-year, month, day = list(map(int,input().split()))
-
+year, month, day = list(map(int,input('請輸入限制時間:').split()))
 with open(outputname, 'w') as f:
     for i in column:
         f.write(i)
