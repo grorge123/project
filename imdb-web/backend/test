@@ -1,0 +1,6 @@
+import torch
+import inference
+text = "this is a good movie"
+model = torch.load('./models/imdb_bert.pth', map_location=torch.device('cpu'))
+output = inference.inference(model, text)
+print(output)
