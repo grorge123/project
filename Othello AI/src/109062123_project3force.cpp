@@ -13,7 +13,7 @@
 #define max(a,b) (a>b?a:b)
 #define F first
 #define S second
-#define poi std::pair<OthelloBoard, int>
+#define poi std::pair<std::array<std::array<int, SIZE>, SIZE>, int>
 #define ppp std::pair<OthelloBoard, Point>
 
 struct Point {
@@ -133,7 +133,15 @@ private:
         }
     }
 public:
-
+    bool operator=(OthelloBoard b){
+        board = b.board;
+        cur_player = b.cur_player;
+        next_valid_spots = b.next_valid_spots;
+        done = b.done;
+        disc_count[0] = b.disc_count[0];
+        disc_count[1] = b.disc_count[1];
+        disc_count[2] = b.disc_count[2];
+    }
     OthelloBoard(std::array<std::array<int, SIZE>, SIZE> new_board, int player) {
          board = new_board;
          cur_player = player;
@@ -191,14 +199,14 @@ int value_f(OthelloBoard now, int player){
 	int X1[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 	int Y1[] = {0, 1, 1, 1, 0, -1, -1, -1};
 	int V[8][8] = {
-        {40, -3, 11, 8, 8, 11, -3, 40},
+        {20, -3, 11, 8, 8, 11, -3, 20},
     	{-3, -7, -4, 1, 1, -4, -7, -3},
     	{11, -4, 2, 2, 2, 2, -4, 11},
     	{8, 1, 2, -3, -3, 2, 1, 8},
     	{8, 1, 2, -3, -3, 2, 1, 8},
     	{11, -4, 2, 2, 2, 2, -4, 11},
     	{-3, -7, -4, 1, 1, -4, -7, -3},
-    	{40, -3, 11, 8, 8, 11, -3, 40}
+    	{20, -3, 11, 8, 8, 11, -3, 20}
     	};
 
 
@@ -295,20 +303,19 @@ int value_f(OthelloBoard now, int player){
 	double score = (10 * p) + (801.724 * c) + (382.026 * l) + (78.922 * m) + (74.396 * f) + (10 * d);
 	return score;
 }
-bool operator <(OthelloBoard a, OthelloBoard b){
-    return a.cur_player < b.cur_player;
-}
-std::map<OthelloBoard,int> ma;
+
+std::map<std::array<std::array<int, SIZE>, SIZE>,int> ma;
 struct cmp{
     bool operator()( const ppp& a , const ppp& b )const{
-        return ma[a.F] < ma[b.F] ;
+        std::cout << ma[a.F.board] << ' ' << ma[b.F.board] << ' ' << ma.size() << std::endl;
+        return ma[a.F.board] < ma[b.F.board] ;
     }
 };
 
 int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool minimax, std::ofstream& fout){
     if(depth == lim || now.done){
         int value = value_f(now, player);
-        ma.insert(poi(now, value));
+        ma.insert(poi(now.board, value));
         return value;
     }
     std::priority_queue<ppp, std::vector<ppp>, cmp> pq;
@@ -321,8 +328,9 @@ int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool mi
         int maxeval = -1e9;
         if(now.cur_player != player)return alpha_beta(depth + 1, lim, alpha, beta, now, !minimax, fout);
         while(!pq.empty()){
-            Point movement = pq.top().S;
-            OthelloBoard newboard = pq.top().F;pq.pop();
+            ppp nowpq = pq.top();pq.pop();
+            Point movement = nowpq.S;
+            OthelloBoard newboard = nowpq.F;
             int eval = alpha_beta(depth + 1, lim, alpha, beta, newboard, !minimax, fout);
             maxeval = max(maxeval, eval);
             if(depth == 0 && eval > alpha){
@@ -336,7 +344,9 @@ int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool mi
         int mineval = 1e9;
         if(now.cur_player != 3 - player)return alpha_beta(depth + 1, lim, alpha, beta, now, !minimax, fout);
         while(!pq.empty()){
-            OthelloBoard newboard = pq.top().F;pq.pop();
+            ppp nowpq = pq.top();pq.pop();
+            Point movement = nowpq.S;
+            OthelloBoard newboard = nowpq.F;
             int eval = alpha_beta(depth + 1, lim, alpha, beta, newboard, !minimax, fout);
             mineval = min(mineval, eval);
             beta = min(beta, eval);
@@ -349,8 +359,10 @@ int main(int, char** argv) {
     std::ifstream fin(argv[1]);
     std::ofstream fout(argv[2]);
     read_board(fin);
+    std::ofstream log("log.txt", std::ios_base::app);
     OthelloBoard now(board, player);
     for(int i = 1 ; i < 1000 ; i++){
+        log << i << std::endl;
         alpha_beta(0, i, -1e9, 1e9, now, 1, fout);
     }
     fin.close();
