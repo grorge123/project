@@ -253,7 +253,7 @@ void launch_executable(std::string filename) {
 
 int main(int argc, char** argv) {
     assert(argc == 3);
-    std::ofstream log("gamelog.txt");
+    std::ofstream log("gamelog.txt", std::ios_base::app);
     std::string player_filename[3];
     player_filename[1] = argv[1];
     player_filename[2] = argv[2];

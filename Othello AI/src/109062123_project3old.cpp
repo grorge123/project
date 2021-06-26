@@ -5,12 +5,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
-#include <map>
-#include <utility>
 #define min(a,b) (a>b?b:a)
 #define max(a,b) (a>b?a:b)
-#define poi pair<OthelloBoard, int>
-
 
 struct Point {
     int x, y;
@@ -178,117 +174,51 @@ public:
         return true;
     }
 };
-
 int value_f(OthelloBoard now, int player){
-    int my_tiles = 0, opp_tiles = 0, i, j, k, my_front_tiles = 0, opp_front_tiles = 0, x, y;
-	double p = 0, c = 0, l = 0, m = 0, f = 0, d = 0;
-
-	int X1[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-	int Y1[] = {0, 1, 1, 1, 0, -1, -1, -1};
-	int V[8][8] = {
-        {40, -3, 11, 8, 8, 11, -3, 40},
-    	{-3, -7, -4, 1, 1, -4, -7, -3},
-    	{11, -4, 2, 2, 2, 2, -4, 11},
-    	{8, 1, 2, -3, -3, 2, 1, 8},
-    	{8, 1, 2, -3, -3, 2, 1, 8},
-    	{11, -4, 2, 2, 2, 2, -4, 11},
-    	{-3, -7, -4, 1, 1, -4, -7, -3},
-    	{40, -3, 11, 8, 8, 11, -3, 40}
-    	};
-
-
-	for(i=0; i<8; i++)
-		for(j=0; j<8; j++)  {
-			if(now.board[i][j] == player)  {
-				d += V[i][j];
-				my_tiles++;
-			} else if(now.board[i][j] == 3 - player)  {
-				d -= V[i][j];
-				opp_tiles++;
-			}
-			if(now.board[i][j] != 0)   {
-				for(k=0; k<8; k++)  {
-					x = i + X1[k]; y = j + Y1[k];
-					if(x >= 0 && x < 8 && y >= 0 && y < 8 && now.board[x][y] == 0) {
-						if(now.board[i][j] == player)  my_front_tiles++;
-						else opp_front_tiles++;
-						break;
-					}
-				}
-			}
-		}
-	if(my_tiles > opp_tiles)
-		p = (100.0 * my_tiles)/(my_tiles + opp_tiles);
-	else if(my_tiles < opp_tiles)
-		p = -(100.0 * opp_tiles)/(my_tiles + opp_tiles);
-	else p = 0;
-
-	if(my_front_tiles > opp_front_tiles)
-		f = -(100.0 * my_front_tiles)/(my_front_tiles + opp_front_tiles);
-	else if(my_front_tiles < opp_front_tiles)
-		f = (100.0 * opp_front_tiles)/(my_front_tiles + opp_front_tiles);
-	else f = 0;
-
-	my_tiles = opp_tiles = 0;
-	if(now.board[0][0] == player) my_tiles++;
-	else if(now.board[0][0] == 3 - player) opp_tiles++;
-	if(now.board[0][7] == player) my_tiles++;
-	else if(now.board[0][7] == 3 - player) opp_tiles++;
-	if(now.board[7][0] == player) my_tiles++;
-	else if(now.board[7][0] == 3 - player) opp_tiles++;
-	if(now.board[7][7] == player) my_tiles++;
-	else if(now.board[7][7] == 3 - player) opp_tiles++;
-	c = 25 * (my_tiles - opp_tiles);
-
-	my_tiles = opp_tiles = 0;
-	if(now.board[0][0] == 0)   {
-		if(now.board[0][1] == player) my_tiles++;
-		else if(now.board[0][1] == 3 - player) opp_tiles++;
-		if(now.board[1][1] == player) my_tiles++;
-		else if(now.board[1][1] == 3 - player) opp_tiles++;
-		if(now.board[1][0] == player) my_tiles++;
-		else if(now.board[1][0] == 3 - player) opp_tiles++;
-	}
-	if(now.board[0][7] == 0)   {
-		if(now.board[0][6] == player) my_tiles++;
-		else if(now.board[0][6] == 3 - player) opp_tiles++;
-		if(now.board[1][6] == player) my_tiles++;
-		else if(now.board[1][6] == 3 - player) opp_tiles++;
-		if(now.board[1][7] == player) my_tiles++;
-		else if(now.board[1][7] == 3 - player) opp_tiles++;
-	}
-	if(now.board[7][0] == 0)   {
-		if(now.board[7][1] == player) my_tiles++;
-		else if(now.board[7][1] == 3 - player) opp_tiles++;
-		if(now.board[6][1] == player) my_tiles++;
-		else if(now.board[6][1] == 3 - player) opp_tiles++;
-		if(now.board[6][0] == player) my_tiles++;
-		else if(now.board[6][0] == 3 - player) opp_tiles++;
-	}
-	if(now.board[7][7] == 0)   {
-		if(now.board[6][7] == player) my_tiles++;
-		else if(now.board[6][7] == 3 - player) opp_tiles++;
-		if(now.board[6][6] == player) my_tiles++;
-		else if(now.board[6][6] == 3 - player) opp_tiles++;
-		if(now.board[7][6] == player) my_tiles++;
-		else if(now.board[7][6] == 3 - player) opp_tiles++;
-	}
-	l = -12.5 * (my_tiles - opp_tiles);
-
-    int oldplayer = now.cur_player;
-    now.cur_player = player;
-	my_tiles = now.get_valid_spots().size();
-    now.cur_player = 3 - player;
-	opp_tiles = now.get_valid_spots().size();
-    now.cur_player = oldplayer;
-	if(my_tiles > opp_tiles)
-		m = (100.0 * my_tiles)/(my_tiles + opp_tiles);
-	else if(my_tiles < opp_tiles)
-		m = -(100.0 * opp_tiles)/(my_tiles + opp_tiles);
-	else m = 0;
-
-	double score = (10 * p) + (801.724 * c) + (382.026 * l) + (78.922 * m) + (74.396 * f) + (10 * d);
-	return score;
+//    std::cout << "----------------------" << std::endl;
+//    for(int i = 0 ; i < 8 ; i ++){
+//        for(int q = 0 ; q < 8 ; q++){
+//            std::cout << now.board[i][q] << ' ' ;
+//        }
+//        std::cout << std::endl;
+//    }
+//    std::cout <<":"<<player<< "---------------------------" << std::endl;
+    if(now.done){
+        return now.winner == player ? 1e8 : -1e8;
+    }
+    int re = 0;
+    Point master[] = {Point(0,0), Point(0,7), Point(7,0), Point(7,7)};
+    for(auto po : master){
+        if(now.board[po.x][po.y] == player)re += 10000;
+        if(now.board[po.x][po.y] == 3 - player)re -= 10000;
+    }
+    Point special[4][3] = {{Point(0, 1), Point(1, 0), Point(1, 1)}, {Point(0, 6), Point(1, 6), Point(1, 7)}, {Point(6, 0), Point(6, 1), Point(7, 1)}, {Point(6, 6), Point(6, 7), Point(7, 6)}};
+    for(int i = 0 ; i < 4 ; i++){
+        for(auto po : special[i]){
+            if(now.board[master[i].x][master[i].y] == player && now.board[po.x][po.y] == player) re += 300;
+            if(now.board[master[i].x][master[i].y] == 0 && now.board[po.x][po.y] == player) re -= 500;
+            if(now.board[master[i].x][master[i].y] == 3 - player && now.board[po.x][po.y] != player) re -= 800;
+            if(now.board[master[i].x][master[i].y] == 0 && now.board[po.x][po.y] == 3 - player) re += 300;
+        }
+    }
+    for(int i = 0 ; i < 4 ; i++){
+        if(now.board[0][i+2] == player)re += 300;
+        if(now.board[7][i+2] == player)re += 300;
+        if(now.board[i+2][0] == player)re += 300;
+        if(now.board[i+2][7] == player)re += 300;
+        if(now.board[0][i+2] == 3 - player)re -= 300;
+        if(now.board[7][i+2] == 3 - player)re -= 300;
+        if(now.board[i+2][0] == 3 - player)re -= 300;
+        if(now.board[i+2][7] == 3 - player)re -= 300;
+    }
+    for(int i = 1 ; i < 7 ; i++){
+        for(int q = 1 ; q < 7 ; q++){
+            if((i==1&&q==1)||(i==1&&q==6)||(i==6&&q==1)||(i==6&&q==6))continue;
+            if(now.board[i][q] == player)re += 1;
+            if(now.board[i][q] == 3 - player) re -= 1;
+        }
+    }
+    return re;
 }
 
 int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool minimax, std::ofstream& fout){
