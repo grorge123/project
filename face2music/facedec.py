@@ -3,7 +3,7 @@ import json
 
 headers = {
     'Content-Type': 'application/octet-stream',
-    'Ocp-Apim-Subscription-Key': 'cf16983fd22f46f8bcb02cb519e9785e',
+    'Ocp-Apim-Subscription-Key': '',
 }
 
 params = urllib.parse.urlencode({
@@ -14,7 +14,7 @@ params = urllib.parse.urlencode({
 })
 def reqfaced(file):
     try:
-        conn = http.client.HTTPSConnection('face-emotion-grorge.cognitiveservices.azure.com')
+        conn = http.client.HTTPSConnection('')
         # conn.request("POST", "/face/v1.0/detect?%s" % params, "{\"url\":\"https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_800,h_600,dpr_3/https://assets.app.engoo.com/images/0CUB4KUELv6QJiDgFHJfU6.jpeg\"}", headers)
         conn.request("POST", "/face/v1.0/detect?%s" % params, file, headers)
         response = conn.getresponse()
