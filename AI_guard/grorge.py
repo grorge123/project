@@ -5,7 +5,7 @@ logging.basicConfig()
 
 user_sta = {}
 
-updater = Updater("762909631:AAFJrAtxGgq2IpnZHJIqG0-huHUYqGzGtNs")
+updater = Updater("")
 
 def img_opn(path, user_id) : # img processing
     global user_sta
