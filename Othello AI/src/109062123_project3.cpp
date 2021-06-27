@@ -186,14 +186,14 @@ int value_f(OthelloBoard now, int player){
 	int X1[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 	int Y1[] = {0, 1, 1, 1, 0, -1, -1, -1};
 	int V[8][8] = {
-        {20, -3, 11, 8, 8, 11, -3, 20},
+        {40, -3, 11, 8, 8, 11, -3, 40},
     	{-3, -7, -4, 1, 1, -4, -7, -3},
     	{11, -4, 2, 2, 2, 2, -4, 11},
     	{8, 1, 2, -3, -3, 2, 1, 8},
     	{8, 1, 2, -3, -3, 2, 1, 8},
     	{11, -4, 2, 2, 2, 2, -4, 11},
     	{-3, -7, -4, 1, 1, -4, -7, -3},
-    	{20, -3, 11, 8, 8, 11, -3, 20}
+    	{40, -3, 11, 8, 8, 11, -3, 40}
     	};
 
 
@@ -331,7 +331,9 @@ int main(int, char** argv) {
     std::ofstream fout(argv[2]);
     read_board(fin);
     OthelloBoard now(board, player);
-//    for(int i = 1 ; i < 1000 ; i++){
+    srand (time(NULL));
+    write_valid_spot(now.next_valid_spots[rand()%now.next_valid_spots.size()], fout);
+//    for(int i = 6 ; i < 1000 ; i += 2){
 //        alpha_beta(0, i, -1e9, 1e9, now, 1, fout);
 //    }
     alpha_beta(0, 6, -1e9, 1e9, now, 1, fout);
