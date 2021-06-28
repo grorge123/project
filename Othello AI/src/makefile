@@ -17,7 +17,7 @@ $(EXE): %.exe : %.cpp
 	$(CXX) -Wall -Wextra $(CXXFLAGS) -o $@ $<
 else
 $(EXE): % : %.cpp
-	$(CXX) -Wall -Wextra $(CXXFLAGS) -o $@ $<
+	$(CXX) -Wall -Wextra $(CXXFLAGS) -o $@.out $<
 endif
 
 clean:
