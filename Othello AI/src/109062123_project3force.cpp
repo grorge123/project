@@ -249,7 +249,7 @@ int value_f(OthelloBoard now, int player){
 
     Point master[] = {Point(0,0), Point(0,7), Point(7,0), Point(7,7)};
     Point special[4][3] = {{Point(0, 1), Point(1, 0), Point(1, 1)}, {Point(0, 6), Point(1, 6), Point(1, 7)}, {Point(6, 0), Point(6, 1), Point(7, 1)}, {Point(6, 6), Point(6, 7), Point(7, 6)}};
-	
+
     my_tiles = opp_tiles = 0;
     for(int i = 0 ; i < 4 ; i++){
         if(now.board[master[i].x][master[i].y] == player)my_tiles++;
@@ -279,7 +279,7 @@ int value_f(OthelloBoard now, int player){
 		m = -(100.0 * opp_tiles)/(my_tiles + opp_tiles);
 	else m = 0;
 
-	double score = (10 * p) + (831 * c) + (482 * l) + (80 * m) + (80 * f) + (10 * d);
+	double score = (10 * p) + (831 * c) + (482 * l) + (80 * m) + (0 * f) + (10 * d);
 	return score;
 }
 struct cmp2{
@@ -344,12 +344,12 @@ int main(int, char** argv) {
     std::ifstream fin(argv[1]);
     std::ofstream fout(argv[2]);
     read_board(fin);
-    std::ofstream log("log.txt", std::ios_base::app);
+//    std::ofstream log("log.txt", std::ios_base::app);
     OthelloBoard now(board, player);
     write_valid_spot(now.next_valid_spots[0], fout);
     int MAXalpha = -1e9;
     for(int i = 1 ; i < 64 ; i++){
-        log << i << std::endl;
+//        log << i << std::endl;
         int eval = alpha_beta(0, i, -1e9, 1e9, now, 1, fout);
         write_valid_spot(movement[movement.size()-1], fout);
         MAXalpha = max(MAXalpha, eval);
