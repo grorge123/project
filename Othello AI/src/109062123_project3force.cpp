@@ -204,21 +204,20 @@ int value_f(OthelloBoard now, int player){
 //    }
 //    std::cout <<":"<<player<< "---------------------------" << std::endl;
     if(now.done){
-        return now.winner == player ? 1e8 : -1e8;
+        return (now.winner == player ? 1e8 : -1e8);
     }
     int re = 0;
     Point master[] = {Point(0,0), Point(0,7), Point(7,0), Point(7,7)};
     for(auto po : master){
-        if(now.board[po.x][po.y] == player)re += 10000;
-        if(now.board[po.x][po.y] == 3 - player)re -= 10000;
+        if(now.board[po.x][po.y] == player)re += 1000;
+        if(now.board[po.x][po.y] == 3 - player)re -= 1000;
     }
     Point special[4][3] = {{Point(0, 1), Point(1, 0), Point(1, 1)}, {Point(0, 6), Point(1, 6), Point(1, 7)}, {Point(6, 0), Point(6, 1), Point(7, 1)}, {Point(6, 6), Point(6, 7), Point(7, 6)}};
     for(int i = 0 ; i < 4 ; i++){
         for(auto po : special[i]){
             if(now.board[master[i].x][master[i].y] == player && now.board[po.x][po.y] == player) re += 300;
-            if(now.board[master[i].x][master[i].y] == 0 && now.board[po.x][po.y] == player) re -= 500;
+            if(now.board[master[i].x][master[i].y] == 0 && now.board[po.x][po.y] == player) re -= 800;
             if(now.board[master[i].x][master[i].y] == 3 - player && now.board[po.x][po.y] != player) re -= 800;
-            if(now.board[master[i].x][master[i].y] == 0 && now.board[po.x][po.y] == 3 - player) re += 300;
         }
     }
     for(int i = 0 ; i < 4 ; i++){
@@ -254,7 +253,7 @@ struct cmp{
         return ma[a] < ma[b] ;
     }
 };
-
+std::vector<Point> movement;
 int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool minimax, std::ofstream& fout){
     if(depth == lim || now.done){
         int value = value_f(now, player);
@@ -275,7 +274,8 @@ int alpha_beta(int depth, int lim,int alpha, int beta, OthelloBoard now, bool mi
             ma[nowp] = eval;
             maxeval = max(maxeval, eval);
             if(depth == 0 && eval > alpha){
-                write_valid_spot(nowp, fout);
+//                write_valid_spot(nowp, fout);
+                movement.push_back(nowp);
             }
             alpha = max(alpha, eval);
             if(beta <= alpha)break;
@@ -303,10 +303,12 @@ int main(int, char** argv) {
     read_board(fin);
     std::ofstream log("log.txt", std::ios_base::app);
     OthelloBoard now(board, player);
+    write_valid_spot(now.next_valid_spots[0], fout);
     int MAXalpha = -1e9;
-    for(int i = 6 ; i < 1000 ; i++){
+    for(int i = 1 ; i < 64 ; i++){
         log << i << std::endl;
-        int eval = alpha_beta(0, i, MAXalpha, 1e9, now, 1, fout);
+        int eval = alpha_beta(0, i, -1e9, 1e9, now, 1, fout);
+        write_valid_spot(movement[movement.size()-1], fout);
         MAXalpha = max(MAXalpha, eval);
     }
     fin.close();

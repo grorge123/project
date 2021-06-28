@@ -178,14 +178,17 @@ public:
     std::string encode_output(bool fail=false) {
         int i, j;
         std::stringstream ss;
+        std::ofstream wl("winlog.txt", std::ios_base::app);
         ss << "Timestep #" << (8*8-4-disc_count[EMPTY]+1) << "\n";
         ss << "O: " << disc_count[BLACK] << "; X: " << disc_count[WHITE] << "\n";
         if (fail) {
             ss << "Winner is " << encode_player(winner) << " (Opponent performed invalid move)\n";
+            wl << "Winner is " << encode_player(winner) << " (Opponent performed invalid move)\n";
         } else if (next_valid_spots.size() > 0) {
             ss << encode_player(cur_player) << "'s turn\n";
         } else {
             ss << "Winner is " << encode_player(winner) << "\n";
+            wl << "Winner is " << encode_player(winner) << "\n";
         }
         ss << "+---------------+\n";
         for (i = 0; i < SIZE; i++) {
@@ -286,6 +289,7 @@ int main(int argc, char** argv) {
         if (remove(file_action.c_str()) != 0)
             std::cerr << "Error removing file: " << file_action << "\n";
         // Take action
+        std::cout << "PUT:" << p.x << ' ' << p.y << std::endl;
         if (!game.put_disc(p)) {
             // If action is invalid.
             data = game.encode_output(true);
