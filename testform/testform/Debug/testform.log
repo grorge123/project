@@ -1,3 +1,0 @@
-﻿  MyForm.cpp
-c:\users\曹瀚文\source\repos\testform\testform\myform.h(382): warning C4715: 'testform::MyForm::__use': 不是所有控制路徑都傳回值
-  testform.vcxproj -> C:\Users\曹瀚文\source\repos\testform\Debug\testform.exe

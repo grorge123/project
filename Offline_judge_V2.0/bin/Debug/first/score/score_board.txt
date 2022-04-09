@@ -1,9 +1,0 @@
-name	p1	p2	p3	p4
-grorge	AC 				
-a	AC 	AC 	AC 	AC 	
-Leo	WA 	AC 	AC 		
-test1	AC 	AC 	AC 	AC 	
-JoJo	AC 	AC 	AC 	AC 	
-Jimmy	AC 	AC 	AC 	AC 	
-max	AC 	AC 	AC 	AC 	
-test2					
